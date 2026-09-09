@@ -1,0 +1,86 @@
+
+//
+//
+//
+//
+//
+//
+
+.version 8.5
+.target sm_89
+.address_size 64
+
+//
+
+.visible .entry k_initial_merge(
+.param .u64 k_initial_merge_param_0,
+.param .u64 k_initial_merge_param_1,
+.param .u64 k_initial_merge_param_2,
+.param .u64 k_initial_merge_param_3,
+.param .u32 k_initial_merge_param_4,
+.param .u32 k_initial_merge_param_5,
+.param .f32 k_initial_merge_param_6
+)
+{
+.reg .pred %p<4>;
+.reg .b16 %rs<4>;
+.reg .f32 %f<3>;
+.reg .b32 %r<13>;
+.reg .b64 %rd<20>;
+
+
+ld.param.u64 %rd1, [k_initial_merge_param_0];
+ld.param.u64 %rd2, [k_initial_merge_param_1];
+ld.param.u64 %rd3, [k_initial_merge_param_2];
+ld.param.u64 %rd4, [k_initial_merge_param_3];
+ld.param.u32 %r4, [k_initial_merge_param_4];
+ld.param.u32 %r3, [k_initial_merge_param_5];
+ld.param.f32 %f1, [k_initial_merge_param_6];
+mov.u32 %r5, %ctaid.x;
+mov.u32 %r6, %ntid.x;
+mov.u32 %r7, %tid.x;
+mad.lo.s32 %r1, %r5, %r6, %r7;
+mov.u32 %r8, %ntid.y;
+mov.u32 %r9, %ctaid.y;
+mov.u32 %r10, %tid.y;
+mad.lo.s32 %r2, %r9, %r8, %r10;
+setp.ge.s32 %p1, %r1, %r3;
+setp.ge.s32 %p2, %r2, %r4;
+or.pred %p3, %p2, %p1;
+@%p3 bra $L__BB0_2;
+
+cvta.to.global.u64 %rd5, %rd2;
+mad.lo.s32 %r12, %r2, %r3, %r1;
+mul.wide.s32 %rd6, %r12, 8;
+add.s64 %rd7, %rd5, %rd6;
+ld.global.u64 %rd8, [%rd7];
+cvta.to.global.u64 %rd9, %rd3;
+add.s64 %rd10, %rd9, %rd6;
+ld.global.u64 %rd11, [%rd10];
+cvta.to.global.u64 %rd12, %rd4;
+mul.wide.s32 %rd13, %r12, 2;
+add.s64 %rd14, %rd12, %rd13;
+ld.global.u16 %rs2, [%rd14];
+//
+{ cvt.rn.f16.f32 %rs1, %f1;}
+
+//
+//
+{ mov.b32 %r11, {%rs2,%rs1};}
+
+//
+cvta.to.global.u64 %rd15, %rd1;
+mul.wide.s32 %rd16, %r12, 20;
+add.s64 %rd17, %rd15, %rd16;
+st.global.u32 [%rd17], %rd8;
+shr.u64 %rd18, %rd8, 32;
+st.global.u32 [%rd17+4], %rd18;
+st.global.u32 [%rd17+8], %rd11;
+shr.u64 %rd19, %rd11, 32;
+st.global.u32 [%rd17+12], %rd19;
+st.global.u32 [%rd17+16], %r11;
+
+$L__BB0_2:
+ret;
+
+}

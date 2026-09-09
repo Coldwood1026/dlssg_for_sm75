@@ -1,0 +1,76 @@
+
+//
+//
+//
+//
+//
+//
+
+.version 8.7
+.target sm_89
+.address_size 64
+
+//
+
+.visible .entry main_kernel(
+.param .u64 main_kernel_param_0,
+.param .u64 main_kernel_param_1,
+.param .u64 main_kernel_param_2,
+.param .u32 main_kernel_param_3,
+.param .u32 main_kernel_param_4,
+.param .u32 main_kernel_param_5
+)
+{
+.reg .pred %p<5>;
+.reg .f32 %f<23>;
+.reg .b32 %r<18>;
+.reg .b64 %rd<10>;
+
+
+ld.param.u64 %rd4, [main_kernel_param_0];
+ld.param.u64 %rd6, [main_kernel_param_1];
+ld.param.u64 %rd8, [main_kernel_param_2];
+ld.param.u32 %r3, [main_kernel_param_3];
+ld.param.u32 %r4, [main_kernel_param_4];
+ld.param.u32 %r5, [main_kernel_param_5];
+mov.u32 %r6, %ctaid.x;
+mov.u32 %r7, %ntid.x;
+mov.u32 %r8, %tid.x;
+mad.lo.s32 %r1, %r6, %r7, %r8;
+mov.u32 %r9, %ntid.y;
+mov.u32 %r10, %ctaid.y;
+mov.u32 %r11, %tid.y;
+mad.lo.s32 %r2, %r10, %r9, %r11;
+setp.ge.u32 %p1, %r1, %r4;
+setp.ge.u32 %p2, %r2, %r5;
+or.pred %p3, %p1, %p2;
+@%p3 bra $L__BB0_4;
+
+//
+tex.base.2d.v4.f32.s32 {%f4,%f5,%f6,%f7}, [%rd4, {%r1,%r2}];
+//
+add.ftz.f32 %f8, %f4, %f5;
+add.ftz.f32 %f9, %f6, %f8;
+mov.f32 %f10, 0f40400000;
+div.approx.ftz.f32 %f11, %f9, %f10;
+cvt.ftz.sat.f32.f32 %f22, %f11;
+setp.eq.s32 %p4, %r3, 0;
+@%p4 bra $L__BB0_3;
+
+//
+tex.base.2d.v4.f32.s32 {%f12,%f13,%f14,%f15}, [%rd6, {%r1,%r2}];
+//
+mov.f32 %f16, 0f3F800000;
+sub.ftz.f32 %f17, %f16, %f12;
+mul.ftz.f32 %f22, %f22, %f17;
+
+$L__BB0_3:
+mov.f32 %f21, 0f00000000;
+//
+sust.p.2d.v4.b32.clamp [%rd8, {%r1,%r2}], {%f22,%f21,%f21,%f21};
+//
+
+$L__BB0_4:
+ret;
+
+}

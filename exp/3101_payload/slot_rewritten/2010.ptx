@@ -1,0 +1,2377 @@
+
+
+
+
+
+
+
+
+.version 8.3
+.target sm_75
+.address_size 64
+
+
+
+
+.visible .entry k_conv_fp16_nhwc(
+.param .u64 k_conv_fp16_nhwc_param_0,
+.param .u64 k_conv_fp16_nhwc_param_1,
+.param .u32 k_conv_fp16_nhwc_param_2,
+.param .u32 k_conv_fp16_nhwc_param_3,
+.param .u64 k_conv_fp16_nhwc_param_4,
+.param .u32 k_conv_fp16_nhwc_param_5,
+.param .u32 k_conv_fp16_nhwc_param_6
+)
+{
+.local .align 16 .b8 __local_depot0[16];
+.reg .b64 %SP;
+.reg .b64 %SPL;
+.reg .pred %p<149>;
+.reg .b16 %rs<50>;
+.reg .f32 %f<2>;
+.reg .b32 %r<2207>;
+.reg .b64 %rd<191>;
+.reg .f32 %f900, %f901, %f902;
+.reg .f32 %f903, %f904, %f905;
+.reg .f32 %f906, %f907, %f908;
+.reg .f32 %f909, %f910, %f911;
+.reg .f32 %f912, %f913, %f914;
+.reg .f32 %f915, %f916, %f917;
+.reg .f32 %f918, %f919, %f920;
+.reg .f32 %f921, %f922, %f923;
+
+.shared .align 4 .b8 _ZZ16k_conv_fp16_nhwcE6buffer[512];
+
+mov.u64 %SPL, __local_depot0;
+ld.param.u64 %rd72, [k_conv_fp16_nhwc_param_0];
+ld.param.u64 %rd73, [k_conv_fp16_nhwc_param_1];
+ld.param.u32 %r561, [k_conv_fp16_nhwc_param_2];
+ld.param.u32 %r562, [k_conv_fp16_nhwc_param_3];
+ld.param.u64 %rd74, [k_conv_fp16_nhwc_param_4];
+ld.param.u32 %r563, [k_conv_fp16_nhwc_param_5];
+ld.param.u32 %r564, [k_conv_fp16_nhwc_param_6];
+cvta.to.global.u64 %rd1, %rd73;
+cvta.to.global.u64 %rd2, %rd74;
+add.u64 %rd3, %SPL, 0;
+mov.u32 %r566, %ntid.y;
+mov.u32 %r567, %tid.z;
+mov.u32 %r568, %tid.y;
+mad.lo.s32 %r569, %r566, %r567, %r568;
+mov.u32 %r570, %ntid.x;
+mul.lo.s32 %r1, %r569, %r570;
+mov.u32 %r2, %tid.x;
+add.s32 %r3, %r1, %r2;
+shl.b32 %r4, %r2, 2;
+mov.u32 %r5, %ctaid.z;
+shl.b32 %r571, %r5, 8;
+cvta.to.global.u64 %rd4, %rd72;
+mul.wide.u32 %rd76, %r571, 2;
+add.s64 %rd77, %rd4, %rd76;
+cvt.u64.u32 %rd78, %r4;
+and.b64 %rd79, %rd78, 12;
+add.s64 %rd80, %rd77, %rd79;
+ld.global.u32 %r6, [%rd80+524288];
+ld.global.u32 %r7, [%rd80+524544];
+mov.u32 %r572, %ctaid.x;
+shl.b32 %r10, %r572, 4;
+mov.u32 %r11, %ctaid.y;
+shl.b32 %r2198, %r2, 3;
+shl.b32 %r13, %r568, 4;
+shr.u32 %r2197, %r2198, 1;
+shl.b32 %r2196, %r2, 4;
+shl.b32 %r2195, %r2, 9;
+mov.u32 %r2044, 0;
+mov.u32 %r2040, %r2195;
+mov.u32 %r2041, %r2196;
+mov.u32 %r2042, %r2197;
+mov.u32 %r2043, %r2198;
+mov.u64 %rd159, %rd3;
+
+$L__BB0_1:
+.pragma "nounroll";
+and.b32 %r573, %r2042, 112;
+and.b32 %r574, %r2040, 128;
+or.b32 %r575, %r574, %r573;
+shr.u32 %r576, %r575, 4;
+add.s32 %r577, %r576, %r13;
+and.b32 %r578, %r577, 15;
+shr.s32 %r579, %r577, 4;
+add.s32 %r22, %r578, %r10;
+add.s32 %r23, %r11, %r579;
+setp.ge.s32 %p1, %r23, %r562;
+setp.ge.s32 %p2, %r22, %r561;
+or.pred %p3, %p1, %p2;
+@%p3 bra $L__BB0_3;
+
+mad.lo.s32 %r580, %r23, %r561, %r22;
+shl.b32 %r581, %r580, 9;
+and.b32 %r582, %r2041, 8;
+shr.u32 %r583, %r2043, 2;
+and.b32 %r584, %r583, 6;
+or.b32 %r585, %r582, %r584;
+or.b32 %r586, %r581, %r585;
+shr.s32 %r587, %r586, 1;
+mul.wide.s32 %rd81, %r587, 4;
+add.s64 %rd82, %rd1, %rd81;
+ld.global.u32 %r588, [%rd82];
+st.local.u32 [%rd159], %r588;
+
+$L__BB0_3:
+add.s32 %r2044, %r2044, 2;
+add.s64 %rd159, %rd159, 4;
+add.s32 %r2043, %r2043, 2;
+add.s32 %r2042, %r2042, 1;
+add.s32 %r2041, %r2041, 4;
+add.s32 %r2040, %r2040, 128;
+setp.lt.u32 %p4, %r2044, 8;
+@%p4 bra $L__BB0_1;
+
+shl.b32 %r610, %r5, 13;
+cvt.u64.u32 %rd83, %r610;
+add.s64 %rd85, %rd83, %rd78;
+shl.b64 %rd86, %rd85, 1;
+add.s64 %rd7, %rd4, %rd86;
+ld.local.v4.u32 {%r611, %r612, %r613, %r614}, [%rd3];
+mov.u32 %r2049, 0;
+ld.global.u32 %r595, [%rd7];
+ld.global.u32 %r596, [%rd7+4];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r589,%r590}, {%r611,%r612}, {%r595}, {%r6,%r6};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r589,%r590}, {%r613,%r614}, {%r596}, {%r589,%r590};
+
+
+ld.global.u32 %r605, [%rd7+8192];
+ld.global.u32 %r606, [%rd7+8196];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r599,%r600}, {%r611,%r612}, {%r605}, {%r7,%r7};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r599,%r600}, {%r613,%r614}, {%r606}, {%r599,%r600};
+
+
+mov.u32 %r2045, %r2195;
+mov.u32 %r2046, %r2196;
+mov.u32 %r2047, %r2197;
+mov.u32 %r2048, %r2198;
+mov.u64 %rd160, %rd3;
+
+$L__BB0_5:
+.pragma "nounroll";
+and.b32 %r615, %r2047, 112;
+and.b32 %r616, %r2045, 128;
+or.b32 %r617, %r616, %r615;
+shr.u32 %r618, %r617, 4;
+add.s32 %r619, %r618, %r13;
+and.b32 %r620, %r619, 15;
+shr.s32 %r621, %r619, 4;
+add.s32 %r38, %r620, %r10;
+add.s32 %r39, %r11, %r621;
+setp.ge.s32 %p5, %r39, %r562;
+setp.ge.s32 %p6, %r38, %r561;
+or.pred %p7, %p5, %p6;
+@%p7 bra $L__BB0_7;
+
+mad.lo.s32 %r622, %r39, %r561, %r38;
+shl.b32 %r623, %r622, 9;
+and.b32 %r624, %r2046, 8;
+shr.u32 %r625, %r2048, 2;
+and.b32 %r626, %r625, 6;
+or.b32 %r627, %r624, %r626;
+or.b32 %r628, %r623, %r627;
+or.b32 %r629, %r628, 16;
+shr.s32 %r630, %r629, 1;
+mul.wide.s32 %rd87, %r630, 4;
+add.s64 %rd88, %rd1, %rd87;
+ld.global.u32 %r631, [%rd88];
+st.local.u32 [%rd160], %r631;
+
+$L__BB0_7:
+add.s32 %r2049, %r2049, 2;
+add.s64 %rd160, %rd160, 4;
+add.s32 %r2048, %r2048, 2;
+add.s32 %r2047, %r2047, 1;
+add.s32 %r2046, %r2046, 4;
+add.s32 %r2045, %r2045, 128;
+setp.lt.u32 %p8, %r2049, 8;
+@%p8 bra $L__BB0_5;
+
+ld.local.v4.u32 {%r653, %r654, %r655, %r656}, [%rd3];
+mov.u32 %r2054, 0;
+ld.global.u32 %r638, [%rd7+256];
+ld.global.u32 %r639, [%rd7+260];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r632,%r633}, {%r653,%r654}, {%r638}, {%r589,%r590};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r632,%r633}, {%r655,%r656}, {%r639}, {%r632,%r633};
+
+
+ld.global.u32 %r648, [%rd7+8448];
+ld.global.u32 %r649, [%rd7+8452];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r642,%r643}, {%r653,%r654}, {%r648}, {%r599,%r600};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r642,%r643}, {%r655,%r656}, {%r649}, {%r642,%r643};
+
+
+mov.u32 %r2050, %r2195;
+mov.u32 %r2051, %r2196;
+mov.u32 %r2052, %r2197;
+mov.u32 %r2053, %r2198;
+mov.u64 %rd161, %rd3;
+
+$L__BB0_9:
+.pragma "nounroll";
+and.b32 %r657, %r2052, 112;
+and.b32 %r658, %r2050, 128;
+or.b32 %r659, %r658, %r657;
+shr.u32 %r660, %r659, 4;
+add.s32 %r661, %r660, %r13;
+and.b32 %r662, %r661, 15;
+shr.s32 %r663, %r661, 4;
+add.s32 %r54, %r662, %r10;
+add.s32 %r55, %r11, %r663;
+setp.ge.s32 %p9, %r55, %r562;
+setp.ge.s32 %p10, %r54, %r561;
+or.pred %p11, %p9, %p10;
+@%p11 bra $L__BB0_11;
+
+mad.lo.s32 %r664, %r55, %r561, %r54;
+shl.b32 %r665, %r664, 9;
+and.b32 %r666, %r2051, 8;
+shr.u32 %r667, %r2053, 2;
+and.b32 %r668, %r667, 6;
+or.b32 %r669, %r666, %r668;
+or.b32 %r670, %r665, %r669;
+or.b32 %r671, %r670, 32;
+shr.s32 %r672, %r671, 1;
+mul.wide.s32 %rd89, %r672, 4;
+add.s64 %rd90, %rd1, %rd89;
+ld.global.u32 %r673, [%rd90];
+st.local.u32 [%rd161], %r673;
+
+$L__BB0_11:
+add.s32 %r2054, %r2054, 2;
+add.s64 %rd161, %rd161, 4;
+add.s32 %r2053, %r2053, 2;
+add.s32 %r2052, %r2052, 1;
+add.s32 %r2051, %r2051, 4;
+add.s32 %r2050, %r2050, 128;
+setp.lt.u32 %p12, %r2054, 8;
+@%p12 bra $L__BB0_9;
+
+ld.local.v4.u32 {%r695, %r696, %r697, %r698}, [%rd3];
+mov.u32 %r2059, 0;
+ld.global.u32 %r680, [%rd7+512];
+ld.global.u32 %r681, [%rd7+516];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r674,%r675}, {%r695,%r696}, {%r680}, {%r632,%r633};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r674,%r675}, {%r697,%r698}, {%r681}, {%r674,%r675};
+
+
+ld.global.u32 %r690, [%rd7+8704];
+ld.global.u32 %r691, [%rd7+8708];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r684,%r685}, {%r695,%r696}, {%r690}, {%r642,%r643};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r684,%r685}, {%r697,%r698}, {%r691}, {%r684,%r685};
+
+
+mov.u32 %r2055, %r2195;
+mov.u32 %r2056, %r2196;
+mov.u32 %r2057, %r2197;
+mov.u32 %r2058, %r2198;
+mov.u64 %rd162, %rd3;
+
+$L__BB0_13:
+.pragma "nounroll";
+and.b32 %r699, %r2057, 112;
+and.b32 %r700, %r2055, 128;
+or.b32 %r701, %r700, %r699;
+shr.u32 %r702, %r701, 4;
+add.s32 %r703, %r702, %r13;
+and.b32 %r704, %r703, 15;
+shr.s32 %r705, %r703, 4;
+add.s32 %r70, %r704, %r10;
+add.s32 %r71, %r11, %r705;
+setp.ge.s32 %p13, %r71, %r562;
+setp.ge.s32 %p14, %r70, %r561;
+or.pred %p15, %p13, %p14;
+@%p15 bra $L__BB0_15;
+
+mad.lo.s32 %r706, %r71, %r561, %r70;
+shl.b32 %r707, %r706, 9;
+and.b32 %r708, %r2056, 8;
+shr.u32 %r709, %r2058, 2;
+and.b32 %r710, %r709, 6;
+or.b32 %r711, %r708, %r710;
+or.b32 %r712, %r707, %r711;
+or.b32 %r713, %r712, 48;
+shr.s32 %r714, %r713, 1;
+mul.wide.s32 %rd91, %r714, 4;
+add.s64 %rd92, %rd1, %rd91;
+ld.global.u32 %r715, [%rd92];
+st.local.u32 [%rd162], %r715;
+
+$L__BB0_15:
+add.s32 %r2059, %r2059, 2;
+add.s64 %rd162, %rd162, 4;
+add.s32 %r2058, %r2058, 2;
+add.s32 %r2057, %r2057, 1;
+add.s32 %r2056, %r2056, 4;
+add.s32 %r2055, %r2055, 128;
+setp.lt.u32 %p16, %r2059, 8;
+@%p16 bra $L__BB0_13;
+
+ld.local.v4.u32 {%r737, %r738, %r739, %r740}, [%rd3];
+mov.u32 %r2064, 0;
+ld.global.u32 %r722, [%rd7+768];
+ld.global.u32 %r723, [%rd7+772];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r716,%r717}, {%r737,%r738}, {%r722}, {%r674,%r675};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r716,%r717}, {%r739,%r740}, {%r723}, {%r716,%r717};
+
+
+ld.global.u32 %r732, [%rd7+8960];
+ld.global.u32 %r733, [%rd7+8964];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r726,%r727}, {%r737,%r738}, {%r732}, {%r684,%r685};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r726,%r727}, {%r739,%r740}, {%r733}, {%r726,%r727};
+
+
+mov.u32 %r2060, %r2195;
+mov.u32 %r2061, %r2196;
+mov.u32 %r2062, %r2197;
+mov.u32 %r2063, %r2198;
+mov.u64 %rd163, %rd3;
+
+$L__BB0_17:
+.pragma "nounroll";
+and.b32 %r741, %r2062, 112;
+and.b32 %r742, %r2060, 128;
+or.b32 %r743, %r742, %r741;
+shr.u32 %r744, %r743, 4;
+add.s32 %r745, %r744, %r13;
+and.b32 %r746, %r745, 15;
+shr.s32 %r747, %r745, 4;
+add.s32 %r86, %r746, %r10;
+add.s32 %r87, %r11, %r747;
+setp.ge.s32 %p17, %r87, %r562;
+setp.ge.s32 %p18, %r86, %r561;
+or.pred %p19, %p17, %p18;
+@%p19 bra $L__BB0_19;
+
+mad.lo.s32 %r748, %r87, %r561, %r86;
+shl.b32 %r749, %r748, 9;
+and.b32 %r750, %r2061, 8;
+shr.u32 %r751, %r2063, 2;
+and.b32 %r752, %r751, 6;
+or.b32 %r753, %r750, %r752;
+or.b32 %r754, %r749, %r753;
+or.b32 %r755, %r754, 64;
+shr.s32 %r756, %r755, 1;
+mul.wide.s32 %rd93, %r756, 4;
+add.s64 %rd94, %rd1, %rd93;
+ld.global.u32 %r757, [%rd94];
+st.local.u32 [%rd163], %r757;
+
+$L__BB0_19:
+add.s32 %r2064, %r2064, 2;
+add.s64 %rd163, %rd163, 4;
+add.s32 %r2063, %r2063, 2;
+add.s32 %r2062, %r2062, 1;
+add.s32 %r2061, %r2061, 4;
+add.s32 %r2060, %r2060, 128;
+setp.lt.u32 %p20, %r2064, 8;
+@%p20 bra $L__BB0_17;
+
+ld.local.v4.u32 {%r779, %r780, %r781, %r782}, [%rd3];
+mov.u32 %r2069, 0;
+ld.global.u32 %r764, [%rd7+1024];
+ld.global.u32 %r765, [%rd7+1028];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r758,%r759}, {%r779,%r780}, {%r764}, {%r716,%r717};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r758,%r759}, {%r781,%r782}, {%r765}, {%r758,%r759};
+
+
+ld.global.u32 %r774, [%rd7+9216];
+ld.global.u32 %r775, [%rd7+9220];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r768,%r769}, {%r779,%r780}, {%r774}, {%r726,%r727};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r768,%r769}, {%r781,%r782}, {%r775}, {%r768,%r769};
+
+
+mov.u32 %r2065, %r2195;
+mov.u32 %r2066, %r2196;
+mov.u32 %r2067, %r2197;
+mov.u32 %r2068, %r2198;
+mov.u64 %rd164, %rd3;
+
+$L__BB0_21:
+.pragma "nounroll";
+and.b32 %r783, %r2067, 112;
+and.b32 %r784, %r2065, 128;
+or.b32 %r785, %r784, %r783;
+shr.u32 %r786, %r785, 4;
+add.s32 %r787, %r786, %r13;
+and.b32 %r788, %r787, 15;
+shr.s32 %r789, %r787, 4;
+add.s32 %r102, %r788, %r10;
+add.s32 %r103, %r11, %r789;
+setp.ge.s32 %p21, %r103, %r562;
+setp.ge.s32 %p22, %r102, %r561;
+or.pred %p23, %p21, %p22;
+@%p23 bra $L__BB0_23;
+
+mad.lo.s32 %r790, %r103, %r561, %r102;
+shl.b32 %r791, %r790, 9;
+and.b32 %r792, %r2066, 8;
+shr.u32 %r793, %r2068, 2;
+and.b32 %r794, %r793, 6;
+or.b32 %r795, %r792, %r794;
+or.b32 %r796, %r791, %r795;
+or.b32 %r797, %r796, 80;
+shr.s32 %r798, %r797, 1;
+mul.wide.s32 %rd95, %r798, 4;
+add.s64 %rd96, %rd1, %rd95;
+ld.global.u32 %r799, [%rd96];
+st.local.u32 [%rd164], %r799;
+
+$L__BB0_23:
+add.s32 %r2069, %r2069, 2;
+add.s64 %rd164, %rd164, 4;
+add.s32 %r2068, %r2068, 2;
+add.s32 %r2067, %r2067, 1;
+add.s32 %r2066, %r2066, 4;
+add.s32 %r2065, %r2065, 128;
+setp.lt.u32 %p24, %r2069, 8;
+@%p24 bra $L__BB0_21;
+
+ld.local.v4.u32 {%r821, %r822, %r823, %r824}, [%rd3];
+mov.u32 %r2074, 0;
+ld.global.u32 %r806, [%rd7+1280];
+ld.global.u32 %r807, [%rd7+1284];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r800,%r801}, {%r821,%r822}, {%r806}, {%r758,%r759};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r800,%r801}, {%r823,%r824}, {%r807}, {%r800,%r801};
+
+
+ld.global.u32 %r816, [%rd7+9472];
+ld.global.u32 %r817, [%rd7+9476];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r810,%r811}, {%r821,%r822}, {%r816}, {%r768,%r769};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r810,%r811}, {%r823,%r824}, {%r817}, {%r810,%r811};
+
+
+mov.u32 %r2070, %r2195;
+mov.u32 %r2071, %r2196;
+mov.u32 %r2072, %r2197;
+mov.u32 %r2073, %r2198;
+mov.u64 %rd165, %rd3;
+
+$L__BB0_25:
+.pragma "nounroll";
+and.b32 %r825, %r2072, 112;
+and.b32 %r826, %r2070, 128;
+or.b32 %r827, %r826, %r825;
+shr.u32 %r828, %r827, 4;
+add.s32 %r829, %r828, %r13;
+and.b32 %r830, %r829, 15;
+shr.s32 %r831, %r829, 4;
+add.s32 %r118, %r830, %r10;
+add.s32 %r119, %r11, %r831;
+setp.ge.s32 %p25, %r119, %r562;
+setp.ge.s32 %p26, %r118, %r561;
+or.pred %p27, %p25, %p26;
+@%p27 bra $L__BB0_27;
+
+mad.lo.s32 %r832, %r119, %r561, %r118;
+shl.b32 %r833, %r832, 9;
+and.b32 %r834, %r2071, 8;
+shr.u32 %r835, %r2073, 2;
+and.b32 %r836, %r835, 6;
+or.b32 %r837, %r834, %r836;
+or.b32 %r838, %r833, %r837;
+or.b32 %r839, %r838, 96;
+shr.s32 %r840, %r839, 1;
+mul.wide.s32 %rd97, %r840, 4;
+add.s64 %rd98, %rd1, %rd97;
+ld.global.u32 %r841, [%rd98];
+st.local.u32 [%rd165], %r841;
+
+$L__BB0_27:
+add.s32 %r2074, %r2074, 2;
+add.s64 %rd165, %rd165, 4;
+add.s32 %r2073, %r2073, 2;
+add.s32 %r2072, %r2072, 1;
+add.s32 %r2071, %r2071, 4;
+add.s32 %r2070, %r2070, 128;
+setp.lt.u32 %p28, %r2074, 8;
+@%p28 bra $L__BB0_25;
+
+ld.local.v4.u32 {%r863, %r864, %r865, %r866}, [%rd3];
+mov.u32 %r2079, 0;
+ld.global.u32 %r848, [%rd7+1536];
+ld.global.u32 %r849, [%rd7+1540];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r842,%r843}, {%r863,%r864}, {%r848}, {%r800,%r801};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r842,%r843}, {%r865,%r866}, {%r849}, {%r842,%r843};
+
+
+ld.global.u32 %r858, [%rd7+9728];
+ld.global.u32 %r859, [%rd7+9732];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r852,%r853}, {%r863,%r864}, {%r858}, {%r810,%r811};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r852,%r853}, {%r865,%r866}, {%r859}, {%r852,%r853};
+
+
+mov.u32 %r2075, %r2195;
+mov.u32 %r2076, %r2196;
+mov.u32 %r2077, %r2197;
+mov.u32 %r2078, %r2198;
+mov.u64 %rd166, %rd3;
+
+$L__BB0_29:
+.pragma "nounroll";
+and.b32 %r867, %r2077, 112;
+and.b32 %r868, %r2075, 128;
+or.b32 %r869, %r868, %r867;
+shr.u32 %r870, %r869, 4;
+add.s32 %r871, %r870, %r13;
+and.b32 %r872, %r871, 15;
+shr.s32 %r873, %r871, 4;
+add.s32 %r134, %r872, %r10;
+add.s32 %r135, %r11, %r873;
+setp.ge.s32 %p29, %r135, %r562;
+setp.ge.s32 %p30, %r134, %r561;
+or.pred %p31, %p29, %p30;
+@%p31 bra $L__BB0_31;
+
+mad.lo.s32 %r874, %r135, %r561, %r134;
+shl.b32 %r875, %r874, 9;
+and.b32 %r876, %r2076, 8;
+shr.u32 %r877, %r2078, 2;
+and.b32 %r878, %r877, 6;
+or.b32 %r879, %r876, %r878;
+or.b32 %r880, %r875, %r879;
+or.b32 %r881, %r880, 112;
+shr.s32 %r882, %r881, 1;
+mul.wide.s32 %rd99, %r882, 4;
+add.s64 %rd100, %rd1, %rd99;
+ld.global.u32 %r883, [%rd100];
+st.local.u32 [%rd166], %r883;
+
+$L__BB0_31:
+add.s32 %r2079, %r2079, 2;
+add.s64 %rd166, %rd166, 4;
+add.s32 %r2078, %r2078, 2;
+add.s32 %r2077, %r2077, 1;
+add.s32 %r2076, %r2076, 4;
+add.s32 %r2075, %r2075, 128;
+setp.lt.u32 %p32, %r2079, 8;
+@%p32 bra $L__BB0_29;
+
+ld.local.v4.u32 {%r905, %r906, %r907, %r908}, [%rd3];
+mov.u32 %r2084, 0;
+ld.global.u32 %r890, [%rd7+1792];
+ld.global.u32 %r891, [%rd7+1796];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r884,%r885}, {%r905,%r906}, {%r890}, {%r842,%r843};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r884,%r885}, {%r907,%r908}, {%r891}, {%r884,%r885};
+
+
+ld.global.u32 %r900, [%rd7+9984];
+ld.global.u32 %r901, [%rd7+9988];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r894,%r895}, {%r905,%r906}, {%r900}, {%r852,%r853};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r894,%r895}, {%r907,%r908}, {%r901}, {%r894,%r895};
+
+
+mov.u32 %r2080, %r2195;
+mov.u32 %r2081, %r2196;
+mov.u32 %r2082, %r2197;
+mov.u32 %r2083, %r2198;
+mov.u64 %rd167, %rd3;
+
+$L__BB0_33:
+.pragma "nounroll";
+and.b32 %r909, %r2082, 112;
+and.b32 %r910, %r2080, 128;
+or.b32 %r911, %r910, %r909;
+shr.u32 %r912, %r911, 4;
+add.s32 %r913, %r912, %r13;
+and.b32 %r914, %r913, 15;
+shr.s32 %r915, %r913, 4;
+add.s32 %r150, %r914, %r10;
+add.s32 %r151, %r11, %r915;
+setp.ge.s32 %p33, %r151, %r562;
+setp.ge.s32 %p34, %r150, %r561;
+or.pred %p35, %p33, %p34;
+@%p35 bra $L__BB0_35;
+
+mad.lo.s32 %r916, %r151, %r561, %r150;
+shl.b32 %r917, %r916, 9;
+and.b32 %r918, %r2081, 8;
+shr.u32 %r919, %r2083, 2;
+and.b32 %r920, %r919, 6;
+or.b32 %r921, %r918, %r920;
+or.b32 %r922, %r917, %r921;
+or.b32 %r923, %r922, 128;
+shr.s32 %r924, %r923, 1;
+mul.wide.s32 %rd101, %r924, 4;
+add.s64 %rd102, %rd1, %rd101;
+ld.global.u32 %r925, [%rd102];
+st.local.u32 [%rd167], %r925;
+
+$L__BB0_35:
+add.s32 %r2084, %r2084, 2;
+add.s64 %rd167, %rd167, 4;
+add.s32 %r2083, %r2083, 2;
+add.s32 %r2082, %r2082, 1;
+add.s32 %r2081, %r2081, 4;
+add.s32 %r2080, %r2080, 128;
+setp.lt.u32 %p36, %r2084, 8;
+@%p36 bra $L__BB0_33;
+
+ld.local.v4.u32 {%r947, %r948, %r949, %r950}, [%rd3];
+mov.u32 %r2089, 0;
+ld.global.u32 %r932, [%rd7+2048];
+ld.global.u32 %r933, [%rd7+2052];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r926,%r927}, {%r947,%r948}, {%r932}, {%r884,%r885};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r926,%r927}, {%r949,%r950}, {%r933}, {%r926,%r927};
+
+
+ld.global.u32 %r942, [%rd7+10240];
+ld.global.u32 %r943, [%rd7+10244];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r936,%r937}, {%r947,%r948}, {%r942}, {%r894,%r895};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r936,%r937}, {%r949,%r950}, {%r943}, {%r936,%r937};
+
+
+mov.u32 %r2085, %r2195;
+mov.u32 %r2086, %r2196;
+mov.u32 %r2087, %r2197;
+mov.u32 %r2088, %r2198;
+mov.u64 %rd168, %rd3;
+
+$L__BB0_37:
+.pragma "nounroll";
+and.b32 %r951, %r2087, 112;
+and.b32 %r952, %r2085, 128;
+or.b32 %r953, %r952, %r951;
+shr.u32 %r954, %r953, 4;
+add.s32 %r955, %r954, %r13;
+and.b32 %r956, %r955, 15;
+shr.s32 %r957, %r955, 4;
+add.s32 %r166, %r956, %r10;
+add.s32 %r167, %r11, %r957;
+setp.ge.s32 %p37, %r167, %r562;
+setp.ge.s32 %p38, %r166, %r561;
+or.pred %p39, %p37, %p38;
+@%p39 bra $L__BB0_39;
+
+mad.lo.s32 %r958, %r167, %r561, %r166;
+shl.b32 %r959, %r958, 9;
+and.b32 %r960, %r2086, 8;
+shr.u32 %r961, %r2088, 2;
+and.b32 %r962, %r961, 6;
+or.b32 %r963, %r960, %r962;
+or.b32 %r964, %r959, %r963;
+or.b32 %r965, %r964, 144;
+shr.s32 %r966, %r965, 1;
+mul.wide.s32 %rd103, %r966, 4;
+add.s64 %rd104, %rd1, %rd103;
+ld.global.u32 %r967, [%rd104];
+st.local.u32 [%rd168], %r967;
+
+$L__BB0_39:
+add.s32 %r2089, %r2089, 2;
+add.s64 %rd168, %rd168, 4;
+add.s32 %r2088, %r2088, 2;
+add.s32 %r2087, %r2087, 1;
+add.s32 %r2086, %r2086, 4;
+add.s32 %r2085, %r2085, 128;
+setp.lt.u32 %p40, %r2089, 8;
+@%p40 bra $L__BB0_37;
+
+ld.local.v4.u32 {%r989, %r990, %r991, %r992}, [%rd3];
+mov.u32 %r2094, 0;
+ld.global.u32 %r974, [%rd7+2304];
+ld.global.u32 %r975, [%rd7+2308];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r968,%r969}, {%r989,%r990}, {%r974}, {%r926,%r927};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r968,%r969}, {%r991,%r992}, {%r975}, {%r968,%r969};
+
+
+ld.global.u32 %r984, [%rd7+10496];
+ld.global.u32 %r985, [%rd7+10500];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r978,%r979}, {%r989,%r990}, {%r984}, {%r936,%r937};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r978,%r979}, {%r991,%r992}, {%r985}, {%r978,%r979};
+
+
+mov.u32 %r2090, %r2195;
+mov.u32 %r2091, %r2196;
+mov.u32 %r2092, %r2197;
+mov.u32 %r2093, %r2198;
+mov.u64 %rd169, %rd3;
+
+$L__BB0_41:
+.pragma "nounroll";
+and.b32 %r993, %r2092, 112;
+and.b32 %r994, %r2090, 128;
+or.b32 %r995, %r994, %r993;
+shr.u32 %r996, %r995, 4;
+add.s32 %r997, %r996, %r13;
+and.b32 %r998, %r997, 15;
+shr.s32 %r999, %r997, 4;
+add.s32 %r182, %r998, %r10;
+add.s32 %r183, %r11, %r999;
+setp.ge.s32 %p41, %r183, %r562;
+setp.ge.s32 %p42, %r182, %r561;
+or.pred %p43, %p41, %p42;
+@%p43 bra $L__BB0_43;
+
+mad.lo.s32 %r1000, %r183, %r561, %r182;
+shl.b32 %r1001, %r1000, 9;
+and.b32 %r1002, %r2091, 8;
+shr.u32 %r1003, %r2093, 2;
+and.b32 %r1004, %r1003, 6;
+or.b32 %r1005, %r1002, %r1004;
+or.b32 %r1006, %r1001, %r1005;
+or.b32 %r1007, %r1006, 160;
+shr.s32 %r1008, %r1007, 1;
+mul.wide.s32 %rd105, %r1008, 4;
+add.s64 %rd106, %rd1, %rd105;
+ld.global.u32 %r1009, [%rd106];
+st.local.u32 [%rd169], %r1009;
+
+$L__BB0_43:
+add.s32 %r2094, %r2094, 2;
+add.s64 %rd169, %rd169, 4;
+add.s32 %r2093, %r2093, 2;
+add.s32 %r2092, %r2092, 1;
+add.s32 %r2091, %r2091, 4;
+add.s32 %r2090, %r2090, 128;
+setp.lt.u32 %p44, %r2094, 8;
+@%p44 bra $L__BB0_41;
+
+ld.local.v4.u32 {%r1031, %r1032, %r1033, %r1034}, [%rd3];
+mov.u32 %r2099, 0;
+ld.global.u32 %r1016, [%rd7+2560];
+ld.global.u32 %r1017, [%rd7+2564];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1010,%r1011}, {%r1031,%r1032}, {%r1016}, {%r968,%r969};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1010,%r1011}, {%r1033,%r1034}, {%r1017}, {%r1010,%r1011};
+
+
+ld.global.u32 %r1026, [%rd7+10752];
+ld.global.u32 %r1027, [%rd7+10756];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1020,%r1021}, {%r1031,%r1032}, {%r1026}, {%r978,%r979};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1020,%r1021}, {%r1033,%r1034}, {%r1027}, {%r1020,%r1021};
+
+
+mov.u32 %r2095, %r2195;
+mov.u32 %r2096, %r2196;
+mov.u32 %r2097, %r2197;
+mov.u32 %r2098, %r2198;
+mov.u64 %rd170, %rd3;
+
+$L__BB0_45:
+.pragma "nounroll";
+and.b32 %r1035, %r2097, 112;
+and.b32 %r1036, %r2095, 128;
+or.b32 %r1037, %r1036, %r1035;
+shr.u32 %r1038, %r1037, 4;
+add.s32 %r1039, %r1038, %r13;
+and.b32 %r1040, %r1039, 15;
+shr.s32 %r1041, %r1039, 4;
+add.s32 %r198, %r1040, %r10;
+add.s32 %r199, %r11, %r1041;
+setp.ge.s32 %p45, %r199, %r562;
+setp.ge.s32 %p46, %r198, %r561;
+or.pred %p47, %p45, %p46;
+@%p47 bra $L__BB0_47;
+
+mad.lo.s32 %r1042, %r199, %r561, %r198;
+shl.b32 %r1043, %r1042, 9;
+and.b32 %r1044, %r2096, 8;
+shr.u32 %r1045, %r2098, 2;
+and.b32 %r1046, %r1045, 6;
+or.b32 %r1047, %r1044, %r1046;
+or.b32 %r1048, %r1043, %r1047;
+or.b32 %r1049, %r1048, 176;
+shr.s32 %r1050, %r1049, 1;
+mul.wide.s32 %rd107, %r1050, 4;
+add.s64 %rd108, %rd1, %rd107;
+ld.global.u32 %r1051, [%rd108];
+st.local.u32 [%rd170], %r1051;
+
+$L__BB0_47:
+add.s32 %r2099, %r2099, 2;
+add.s64 %rd170, %rd170, 4;
+add.s32 %r2098, %r2098, 2;
+add.s32 %r2097, %r2097, 1;
+add.s32 %r2096, %r2096, 4;
+add.s32 %r2095, %r2095, 128;
+setp.lt.u32 %p48, %r2099, 8;
+@%p48 bra $L__BB0_45;
+
+ld.local.v4.u32 {%r1073, %r1074, %r1075, %r1076}, [%rd3];
+mov.u32 %r2104, 0;
+ld.global.u32 %r1058, [%rd7+2816];
+ld.global.u32 %r1059, [%rd7+2820];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1052,%r1053}, {%r1073,%r1074}, {%r1058}, {%r1010,%r1011};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1052,%r1053}, {%r1075,%r1076}, {%r1059}, {%r1052,%r1053};
+
+
+ld.global.u32 %r1068, [%rd7+11008];
+ld.global.u32 %r1069, [%rd7+11012];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1062,%r1063}, {%r1073,%r1074}, {%r1068}, {%r1020,%r1021};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1062,%r1063}, {%r1075,%r1076}, {%r1069}, {%r1062,%r1063};
+
+
+mov.u32 %r2100, %r2195;
+mov.u32 %r2101, %r2196;
+mov.u32 %r2102, %r2197;
+mov.u32 %r2103, %r2198;
+mov.u64 %rd171, %rd3;
+
+$L__BB0_49:
+.pragma "nounroll";
+and.b32 %r1077, %r2102, 112;
+and.b32 %r1078, %r2100, 128;
+or.b32 %r1079, %r1078, %r1077;
+shr.u32 %r1080, %r1079, 4;
+add.s32 %r1081, %r1080, %r13;
+and.b32 %r1082, %r1081, 15;
+shr.s32 %r1083, %r1081, 4;
+add.s32 %r214, %r1082, %r10;
+add.s32 %r215, %r11, %r1083;
+setp.ge.s32 %p49, %r215, %r562;
+setp.ge.s32 %p50, %r214, %r561;
+or.pred %p51, %p49, %p50;
+@%p51 bra $L__BB0_51;
+
+mad.lo.s32 %r1084, %r215, %r561, %r214;
+shl.b32 %r1085, %r1084, 9;
+and.b32 %r1086, %r2101, 8;
+shr.u32 %r1087, %r2103, 2;
+and.b32 %r1088, %r1087, 6;
+or.b32 %r1089, %r1086, %r1088;
+or.b32 %r1090, %r1085, %r1089;
+or.b32 %r1091, %r1090, 192;
+shr.s32 %r1092, %r1091, 1;
+mul.wide.s32 %rd109, %r1092, 4;
+add.s64 %rd110, %rd1, %rd109;
+ld.global.u32 %r1093, [%rd110];
+st.local.u32 [%rd171], %r1093;
+
+$L__BB0_51:
+add.s32 %r2104, %r2104, 2;
+add.s64 %rd171, %rd171, 4;
+add.s32 %r2103, %r2103, 2;
+add.s32 %r2102, %r2102, 1;
+add.s32 %r2101, %r2101, 4;
+add.s32 %r2100, %r2100, 128;
+setp.lt.u32 %p52, %r2104, 8;
+@%p52 bra $L__BB0_49;
+
+ld.local.v4.u32 {%r1115, %r1116, %r1117, %r1118}, [%rd3];
+mov.u32 %r2109, 0;
+ld.global.u32 %r1100, [%rd7+3072];
+ld.global.u32 %r1101, [%rd7+3076];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1094,%r1095}, {%r1115,%r1116}, {%r1100}, {%r1052,%r1053};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1094,%r1095}, {%r1117,%r1118}, {%r1101}, {%r1094,%r1095};
+
+
+ld.global.u32 %r1110, [%rd7+11264];
+ld.global.u32 %r1111, [%rd7+11268];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1104,%r1105}, {%r1115,%r1116}, {%r1110}, {%r1062,%r1063};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1104,%r1105}, {%r1117,%r1118}, {%r1111}, {%r1104,%r1105};
+
+
+mov.u32 %r2105, %r2195;
+mov.u32 %r2106, %r2196;
+mov.u32 %r2107, %r2197;
+mov.u32 %r2108, %r2198;
+mov.u64 %rd172, %rd3;
+
+$L__BB0_53:
+.pragma "nounroll";
+and.b32 %r1119, %r2107, 112;
+and.b32 %r1120, %r2105, 128;
+or.b32 %r1121, %r1120, %r1119;
+shr.u32 %r1122, %r1121, 4;
+add.s32 %r1123, %r1122, %r13;
+and.b32 %r1124, %r1123, 15;
+shr.s32 %r1125, %r1123, 4;
+add.s32 %r230, %r1124, %r10;
+add.s32 %r231, %r11, %r1125;
+setp.ge.s32 %p53, %r231, %r562;
+setp.ge.s32 %p54, %r230, %r561;
+or.pred %p55, %p53, %p54;
+@%p55 bra $L__BB0_55;
+
+mad.lo.s32 %r1126, %r231, %r561, %r230;
+shl.b32 %r1127, %r1126, 9;
+and.b32 %r1128, %r2106, 8;
+shr.u32 %r1129, %r2108, 2;
+and.b32 %r1130, %r1129, 6;
+or.b32 %r1131, %r1128, %r1130;
+or.b32 %r1132, %r1127, %r1131;
+or.b32 %r1133, %r1132, 208;
+shr.s32 %r1134, %r1133, 1;
+mul.wide.s32 %rd111, %r1134, 4;
+add.s64 %rd112, %rd1, %rd111;
+ld.global.u32 %r1135, [%rd112];
+st.local.u32 [%rd172], %r1135;
+
+$L__BB0_55:
+add.s32 %r2109, %r2109, 2;
+add.s64 %rd172, %rd172, 4;
+add.s32 %r2108, %r2108, 2;
+add.s32 %r2107, %r2107, 1;
+add.s32 %r2106, %r2106, 4;
+add.s32 %r2105, %r2105, 128;
+setp.lt.u32 %p56, %r2109, 8;
+@%p56 bra $L__BB0_53;
+
+ld.local.v4.u32 {%r1157, %r1158, %r1159, %r1160}, [%rd3];
+mov.u32 %r2114, 0;
+ld.global.u32 %r1142, [%rd7+3328];
+ld.global.u32 %r1143, [%rd7+3332];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1136,%r1137}, {%r1157,%r1158}, {%r1142}, {%r1094,%r1095};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1136,%r1137}, {%r1159,%r1160}, {%r1143}, {%r1136,%r1137};
+
+
+ld.global.u32 %r1152, [%rd7+11520];
+ld.global.u32 %r1153, [%rd7+11524];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1146,%r1147}, {%r1157,%r1158}, {%r1152}, {%r1104,%r1105};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1146,%r1147}, {%r1159,%r1160}, {%r1153}, {%r1146,%r1147};
+
+
+mov.u32 %r2110, %r2195;
+mov.u32 %r2111, %r2196;
+mov.u32 %r2112, %r2197;
+mov.u32 %r2113, %r2198;
+mov.u64 %rd173, %rd3;
+
+$L__BB0_57:
+.pragma "nounroll";
+and.b32 %r1161, %r2112, 112;
+and.b32 %r1162, %r2110, 128;
+or.b32 %r1163, %r1162, %r1161;
+shr.u32 %r1164, %r1163, 4;
+add.s32 %r1165, %r1164, %r13;
+and.b32 %r1166, %r1165, 15;
+shr.s32 %r1167, %r1165, 4;
+add.s32 %r246, %r1166, %r10;
+add.s32 %r247, %r11, %r1167;
+setp.ge.s32 %p57, %r247, %r562;
+setp.ge.s32 %p58, %r246, %r561;
+or.pred %p59, %p57, %p58;
+@%p59 bra $L__BB0_59;
+
+mad.lo.s32 %r1168, %r247, %r561, %r246;
+shl.b32 %r1169, %r1168, 9;
+and.b32 %r1170, %r2111, 8;
+shr.u32 %r1171, %r2113, 2;
+and.b32 %r1172, %r1171, 6;
+or.b32 %r1173, %r1170, %r1172;
+or.b32 %r1174, %r1169, %r1173;
+or.b32 %r1175, %r1174, 224;
+shr.s32 %r1176, %r1175, 1;
+mul.wide.s32 %rd113, %r1176, 4;
+add.s64 %rd114, %rd1, %rd113;
+ld.global.u32 %r1177, [%rd114];
+st.local.u32 [%rd173], %r1177;
+
+$L__BB0_59:
+add.s32 %r2114, %r2114, 2;
+add.s64 %rd173, %rd173, 4;
+add.s32 %r2113, %r2113, 2;
+add.s32 %r2112, %r2112, 1;
+add.s32 %r2111, %r2111, 4;
+add.s32 %r2110, %r2110, 128;
+setp.lt.u32 %p60, %r2114, 8;
+@%p60 bra $L__BB0_57;
+
+ld.local.v4.u32 {%r1199, %r1200, %r1201, %r1202}, [%rd3];
+mov.u32 %r2119, 0;
+ld.global.u32 %r1184, [%rd7+3584];
+ld.global.u32 %r1185, [%rd7+3588];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1178,%r1179}, {%r1199,%r1200}, {%r1184}, {%r1136,%r1137};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1178,%r1179}, {%r1201,%r1202}, {%r1185}, {%r1178,%r1179};
+
+
+ld.global.u32 %r1194, [%rd7+11776];
+ld.global.u32 %r1195, [%rd7+11780];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1188,%r1189}, {%r1199,%r1200}, {%r1194}, {%r1146,%r1147};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1188,%r1189}, {%r1201,%r1202}, {%r1195}, {%r1188,%r1189};
+
+
+mov.u32 %r2115, %r2195;
+mov.u32 %r2116, %r2196;
+mov.u32 %r2117, %r2197;
+mov.u32 %r2118, %r2198;
+mov.u64 %rd174, %rd3;
+
+$L__BB0_61:
+.pragma "nounroll";
+and.b32 %r1203, %r2117, 112;
+and.b32 %r1204, %r2115, 128;
+or.b32 %r1205, %r1204, %r1203;
+shr.u32 %r1206, %r1205, 4;
+add.s32 %r1207, %r1206, %r13;
+and.b32 %r1208, %r1207, 15;
+shr.s32 %r1209, %r1207, 4;
+add.s32 %r262, %r1208, %r10;
+add.s32 %r263, %r11, %r1209;
+setp.ge.s32 %p61, %r263, %r562;
+setp.ge.s32 %p62, %r262, %r561;
+or.pred %p63, %p61, %p62;
+@%p63 bra $L__BB0_63;
+
+mad.lo.s32 %r1210, %r263, %r561, %r262;
+shl.b32 %r1211, %r1210, 9;
+and.b32 %r1212, %r2116, 8;
+shr.u32 %r1213, %r2118, 2;
+and.b32 %r1214, %r1213, 6;
+or.b32 %r1215, %r1212, %r1214;
+or.b32 %r1216, %r1211, %r1215;
+or.b32 %r1217, %r1216, 240;
+shr.s32 %r1218, %r1217, 1;
+mul.wide.s32 %rd115, %r1218, 4;
+add.s64 %rd116, %rd1, %rd115;
+ld.global.u32 %r1219, [%rd116];
+st.local.u32 [%rd174], %r1219;
+
+$L__BB0_63:
+add.s32 %r2119, %r2119, 2;
+add.s64 %rd174, %rd174, 4;
+add.s32 %r2118, %r2118, 2;
+add.s32 %r2117, %r2117, 1;
+add.s32 %r2116, %r2116, 4;
+add.s32 %r2115, %r2115, 128;
+setp.lt.u32 %p64, %r2119, 8;
+@%p64 bra $L__BB0_61;
+
+ld.local.v4.u32 {%r1241, %r1242, %r1243, %r1244}, [%rd3];
+mov.u32 %r2124, 0;
+ld.global.u32 %r1226, [%rd7+3840];
+ld.global.u32 %r1227, [%rd7+3844];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1220,%r1221}, {%r1241,%r1242}, {%r1226}, {%r1178,%r1179};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1220,%r1221}, {%r1243,%r1244}, {%r1227}, {%r1220,%r1221};
+
+
+ld.global.u32 %r1236, [%rd7+12032];
+ld.global.u32 %r1237, [%rd7+12036];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1230,%r1231}, {%r1241,%r1242}, {%r1236}, {%r1188,%r1189};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1230,%r1231}, {%r1243,%r1244}, {%r1237}, {%r1230,%r1231};
+
+
+mov.u32 %r2120, %r2195;
+mov.u32 %r2121, %r2196;
+mov.u32 %r2122, %r2197;
+mov.u32 %r2123, %r2198;
+mov.u64 %rd175, %rd3;
+
+$L__BB0_65:
+.pragma "nounroll";
+and.b32 %r1245, %r2122, 112;
+and.b32 %r1246, %r2120, 128;
+or.b32 %r1247, %r1246, %r1245;
+shr.u32 %r1248, %r1247, 4;
+add.s32 %r1249, %r1248, %r13;
+and.b32 %r1250, %r1249, 15;
+shr.s32 %r1251, %r1249, 4;
+add.s32 %r278, %r1250, %r10;
+add.s32 %r279, %r11, %r1251;
+setp.ge.s32 %p65, %r279, %r562;
+setp.ge.s32 %p66, %r278, %r561;
+or.pred %p67, %p65, %p66;
+@%p67 bra $L__BB0_67;
+
+mad.lo.s32 %r1252, %r279, %r561, %r278;
+shl.b32 %r1253, %r1252, 9;
+and.b32 %r1254, %r2121, 8;
+shr.u32 %r1255, %r2123, 2;
+and.b32 %r1256, %r1255, 6;
+or.b32 %r1257, %r1254, %r1256;
+or.b32 %r1258, %r1253, %r1257;
+or.b32 %r1259, %r1258, 256;
+shr.s32 %r1260, %r1259, 1;
+mul.wide.s32 %rd117, %r1260, 4;
+add.s64 %rd118, %rd1, %rd117;
+ld.global.u32 %r1261, [%rd118];
+st.local.u32 [%rd175], %r1261;
+
+$L__BB0_67:
+add.s32 %r2124, %r2124, 2;
+add.s64 %rd175, %rd175, 4;
+add.s32 %r2123, %r2123, 2;
+add.s32 %r2122, %r2122, 1;
+add.s32 %r2121, %r2121, 4;
+add.s32 %r2120, %r2120, 128;
+setp.lt.u32 %p68, %r2124, 8;
+@%p68 bra $L__BB0_65;
+
+ld.local.v4.u32 {%r1283, %r1284, %r1285, %r1286}, [%rd3];
+mov.u32 %r2129, 0;
+ld.global.u32 %r1268, [%rd7+4096];
+ld.global.u32 %r1269, [%rd7+4100];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1262,%r1263}, {%r1283,%r1284}, {%r1268}, {%r1220,%r1221};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1262,%r1263}, {%r1285,%r1286}, {%r1269}, {%r1262,%r1263};
+
+
+ld.global.u32 %r1278, [%rd7+12288];
+ld.global.u32 %r1279, [%rd7+12292];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1272,%r1273}, {%r1283,%r1284}, {%r1278}, {%r1230,%r1231};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1272,%r1273}, {%r1285,%r1286}, {%r1279}, {%r1272,%r1273};
+
+
+mov.u32 %r2125, %r2195;
+mov.u32 %r2126, %r2196;
+mov.u32 %r2127, %r2197;
+mov.u32 %r2128, %r2198;
+mov.u64 %rd176, %rd3;
+
+$L__BB0_69:
+.pragma "nounroll";
+and.b32 %r1287, %r2127, 112;
+and.b32 %r1288, %r2125, 128;
+or.b32 %r1289, %r1288, %r1287;
+shr.u32 %r1290, %r1289, 4;
+add.s32 %r1291, %r1290, %r13;
+and.b32 %r1292, %r1291, 15;
+shr.s32 %r1293, %r1291, 4;
+add.s32 %r294, %r1292, %r10;
+add.s32 %r295, %r11, %r1293;
+setp.ge.s32 %p69, %r295, %r562;
+setp.ge.s32 %p70, %r294, %r561;
+or.pred %p71, %p69, %p70;
+@%p71 bra $L__BB0_71;
+
+mad.lo.s32 %r1294, %r295, %r561, %r294;
+shl.b32 %r1295, %r1294, 9;
+and.b32 %r1296, %r2126, 8;
+shr.u32 %r1297, %r2128, 2;
+and.b32 %r1298, %r1297, 6;
+or.b32 %r1299, %r1296, %r1298;
+or.b32 %r1300, %r1295, %r1299;
+or.b32 %r1301, %r1300, 272;
+shr.s32 %r1302, %r1301, 1;
+mul.wide.s32 %rd119, %r1302, 4;
+add.s64 %rd120, %rd1, %rd119;
+ld.global.u32 %r1303, [%rd120];
+st.local.u32 [%rd176], %r1303;
+
+$L__BB0_71:
+add.s32 %r2129, %r2129, 2;
+add.s64 %rd176, %rd176, 4;
+add.s32 %r2128, %r2128, 2;
+add.s32 %r2127, %r2127, 1;
+add.s32 %r2126, %r2126, 4;
+add.s32 %r2125, %r2125, 128;
+setp.lt.u32 %p72, %r2129, 8;
+@%p72 bra $L__BB0_69;
+
+ld.local.v4.u32 {%r1325, %r1326, %r1327, %r1328}, [%rd3];
+mov.u32 %r2134, 0;
+ld.global.u32 %r1310, [%rd7+4352];
+ld.global.u32 %r1311, [%rd7+4356];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1304,%r1305}, {%r1325,%r1326}, {%r1310}, {%r1262,%r1263};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1304,%r1305}, {%r1327,%r1328}, {%r1311}, {%r1304,%r1305};
+
+
+ld.global.u32 %r1320, [%rd7+12544];
+ld.global.u32 %r1321, [%rd7+12548];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1314,%r1315}, {%r1325,%r1326}, {%r1320}, {%r1272,%r1273};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1314,%r1315}, {%r1327,%r1328}, {%r1321}, {%r1314,%r1315};
+
+
+mov.u32 %r2130, %r2195;
+mov.u32 %r2131, %r2196;
+mov.u32 %r2132, %r2197;
+mov.u32 %r2133, %r2198;
+mov.u64 %rd177, %rd3;
+
+$L__BB0_73:
+.pragma "nounroll";
+and.b32 %r1329, %r2132, 112;
+and.b32 %r1330, %r2130, 128;
+or.b32 %r1331, %r1330, %r1329;
+shr.u32 %r1332, %r1331, 4;
+add.s32 %r1333, %r1332, %r13;
+and.b32 %r1334, %r1333, 15;
+shr.s32 %r1335, %r1333, 4;
+add.s32 %r310, %r1334, %r10;
+add.s32 %r311, %r11, %r1335;
+setp.ge.s32 %p73, %r311, %r562;
+setp.ge.s32 %p74, %r310, %r561;
+or.pred %p75, %p73, %p74;
+@%p75 bra $L__BB0_75;
+
+mad.lo.s32 %r1336, %r311, %r561, %r310;
+shl.b32 %r1337, %r1336, 9;
+and.b32 %r1338, %r2131, 8;
+shr.u32 %r1339, %r2133, 2;
+and.b32 %r1340, %r1339, 6;
+or.b32 %r1341, %r1338, %r1340;
+or.b32 %r1342, %r1337, %r1341;
+or.b32 %r1343, %r1342, 288;
+shr.s32 %r1344, %r1343, 1;
+mul.wide.s32 %rd121, %r1344, 4;
+add.s64 %rd122, %rd1, %rd121;
+ld.global.u32 %r1345, [%rd122];
+st.local.u32 [%rd177], %r1345;
+
+$L__BB0_75:
+add.s32 %r2134, %r2134, 2;
+add.s64 %rd177, %rd177, 4;
+add.s32 %r2133, %r2133, 2;
+add.s32 %r2132, %r2132, 1;
+add.s32 %r2131, %r2131, 4;
+add.s32 %r2130, %r2130, 128;
+setp.lt.u32 %p76, %r2134, 8;
+@%p76 bra $L__BB0_73;
+
+ld.local.v4.u32 {%r1367, %r1368, %r1369, %r1370}, [%rd3];
+mov.u32 %r2139, 0;
+ld.global.u32 %r1352, [%rd7+4608];
+ld.global.u32 %r1353, [%rd7+4612];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1346,%r1347}, {%r1367,%r1368}, {%r1352}, {%r1304,%r1305};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1346,%r1347}, {%r1369,%r1370}, {%r1353}, {%r1346,%r1347};
+
+
+ld.global.u32 %r1362, [%rd7+12800];
+ld.global.u32 %r1363, [%rd7+12804];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1356,%r1357}, {%r1367,%r1368}, {%r1362}, {%r1314,%r1315};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1356,%r1357}, {%r1369,%r1370}, {%r1363}, {%r1356,%r1357};
+
+
+mov.u32 %r2135, %r2195;
+mov.u32 %r2136, %r2196;
+mov.u32 %r2137, %r2197;
+mov.u32 %r2138, %r2198;
+mov.u64 %rd178, %rd3;
+
+$L__BB0_77:
+.pragma "nounroll";
+and.b32 %r1371, %r2137, 112;
+and.b32 %r1372, %r2135, 128;
+or.b32 %r1373, %r1372, %r1371;
+shr.u32 %r1374, %r1373, 4;
+add.s32 %r1375, %r1374, %r13;
+and.b32 %r1376, %r1375, 15;
+shr.s32 %r1377, %r1375, 4;
+add.s32 %r326, %r1376, %r10;
+add.s32 %r327, %r11, %r1377;
+setp.ge.s32 %p77, %r327, %r562;
+setp.ge.s32 %p78, %r326, %r561;
+or.pred %p79, %p77, %p78;
+@%p79 bra $L__BB0_79;
+
+mad.lo.s32 %r1378, %r327, %r561, %r326;
+shl.b32 %r1379, %r1378, 9;
+and.b32 %r1380, %r2136, 8;
+shr.u32 %r1381, %r2138, 2;
+and.b32 %r1382, %r1381, 6;
+or.b32 %r1383, %r1380, %r1382;
+or.b32 %r1384, %r1379, %r1383;
+or.b32 %r1385, %r1384, 304;
+shr.s32 %r1386, %r1385, 1;
+mul.wide.s32 %rd123, %r1386, 4;
+add.s64 %rd124, %rd1, %rd123;
+ld.global.u32 %r1387, [%rd124];
+st.local.u32 [%rd178], %r1387;
+
+$L__BB0_79:
+add.s32 %r2139, %r2139, 2;
+add.s64 %rd178, %rd178, 4;
+add.s32 %r2138, %r2138, 2;
+add.s32 %r2137, %r2137, 1;
+add.s32 %r2136, %r2136, 4;
+add.s32 %r2135, %r2135, 128;
+setp.lt.u32 %p80, %r2139, 8;
+@%p80 bra $L__BB0_77;
+
+ld.local.v4.u32 {%r1409, %r1410, %r1411, %r1412}, [%rd3];
+mov.u32 %r2144, 0;
+ld.global.u32 %r1394, [%rd7+4864];
+ld.global.u32 %r1395, [%rd7+4868];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1388,%r1389}, {%r1409,%r1410}, {%r1394}, {%r1346,%r1347};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1388,%r1389}, {%r1411,%r1412}, {%r1395}, {%r1388,%r1389};
+
+
+ld.global.u32 %r1404, [%rd7+13056];
+ld.global.u32 %r1405, [%rd7+13060];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1398,%r1399}, {%r1409,%r1410}, {%r1404}, {%r1356,%r1357};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1398,%r1399}, {%r1411,%r1412}, {%r1405}, {%r1398,%r1399};
+
+
+mov.u32 %r2140, %r2195;
+mov.u32 %r2141, %r2196;
+mov.u32 %r2142, %r2197;
+mov.u32 %r2143, %r2198;
+mov.u64 %rd179, %rd3;
+
+$L__BB0_81:
+.pragma "nounroll";
+and.b32 %r1413, %r2142, 112;
+and.b32 %r1414, %r2140, 128;
+or.b32 %r1415, %r1414, %r1413;
+shr.u32 %r1416, %r1415, 4;
+add.s32 %r1417, %r1416, %r13;
+and.b32 %r1418, %r1417, 15;
+shr.s32 %r1419, %r1417, 4;
+add.s32 %r342, %r1418, %r10;
+add.s32 %r343, %r11, %r1419;
+setp.ge.s32 %p81, %r343, %r562;
+setp.ge.s32 %p82, %r342, %r561;
+or.pred %p83, %p81, %p82;
+@%p83 bra $L__BB0_83;
+
+mad.lo.s32 %r1420, %r343, %r561, %r342;
+shl.b32 %r1421, %r1420, 9;
+and.b32 %r1422, %r2141, 8;
+shr.u32 %r1423, %r2143, 2;
+and.b32 %r1424, %r1423, 6;
+or.b32 %r1425, %r1422, %r1424;
+or.b32 %r1426, %r1421, %r1425;
+or.b32 %r1427, %r1426, 320;
+shr.s32 %r1428, %r1427, 1;
+mul.wide.s32 %rd125, %r1428, 4;
+add.s64 %rd126, %rd1, %rd125;
+ld.global.u32 %r1429, [%rd126];
+st.local.u32 [%rd179], %r1429;
+
+$L__BB0_83:
+add.s32 %r2144, %r2144, 2;
+add.s64 %rd179, %rd179, 4;
+add.s32 %r2143, %r2143, 2;
+add.s32 %r2142, %r2142, 1;
+add.s32 %r2141, %r2141, 4;
+add.s32 %r2140, %r2140, 128;
+setp.lt.u32 %p84, %r2144, 8;
+@%p84 bra $L__BB0_81;
+
+ld.local.v4.u32 {%r1451, %r1452, %r1453, %r1454}, [%rd3];
+mov.u32 %r2149, 0;
+ld.global.u32 %r1436, [%rd7+5120];
+ld.global.u32 %r1437, [%rd7+5124];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1430,%r1431}, {%r1451,%r1452}, {%r1436}, {%r1388,%r1389};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1430,%r1431}, {%r1453,%r1454}, {%r1437}, {%r1430,%r1431};
+
+
+ld.global.u32 %r1446, [%rd7+13312];
+ld.global.u32 %r1447, [%rd7+13316];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1440,%r1441}, {%r1451,%r1452}, {%r1446}, {%r1398,%r1399};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1440,%r1441}, {%r1453,%r1454}, {%r1447}, {%r1440,%r1441};
+
+
+mov.u32 %r2145, %r2195;
+mov.u32 %r2146, %r2196;
+mov.u32 %r2147, %r2197;
+mov.u32 %r2148, %r2198;
+mov.u64 %rd180, %rd3;
+
+$L__BB0_85:
+.pragma "nounroll";
+and.b32 %r1455, %r2147, 112;
+and.b32 %r1456, %r2145, 128;
+or.b32 %r1457, %r1456, %r1455;
+shr.u32 %r1458, %r1457, 4;
+add.s32 %r1459, %r1458, %r13;
+and.b32 %r1460, %r1459, 15;
+shr.s32 %r1461, %r1459, 4;
+add.s32 %r358, %r1460, %r10;
+add.s32 %r359, %r11, %r1461;
+setp.ge.s32 %p85, %r359, %r562;
+setp.ge.s32 %p86, %r358, %r561;
+or.pred %p87, %p85, %p86;
+@%p87 bra $L__BB0_87;
+
+mad.lo.s32 %r1462, %r359, %r561, %r358;
+shl.b32 %r1463, %r1462, 9;
+and.b32 %r1464, %r2146, 8;
+shr.u32 %r1465, %r2148, 2;
+and.b32 %r1466, %r1465, 6;
+or.b32 %r1467, %r1464, %r1466;
+or.b32 %r1468, %r1463, %r1467;
+or.b32 %r1469, %r1468, 336;
+shr.s32 %r1470, %r1469, 1;
+mul.wide.s32 %rd127, %r1470, 4;
+add.s64 %rd128, %rd1, %rd127;
+ld.global.u32 %r1471, [%rd128];
+st.local.u32 [%rd180], %r1471;
+
+$L__BB0_87:
+add.s32 %r2149, %r2149, 2;
+add.s64 %rd180, %rd180, 4;
+add.s32 %r2148, %r2148, 2;
+add.s32 %r2147, %r2147, 1;
+add.s32 %r2146, %r2146, 4;
+add.s32 %r2145, %r2145, 128;
+setp.lt.u32 %p88, %r2149, 8;
+@%p88 bra $L__BB0_85;
+
+ld.local.v4.u32 {%r1493, %r1494, %r1495, %r1496}, [%rd3];
+mov.u32 %r2154, 0;
+ld.global.u32 %r1478, [%rd7+5376];
+ld.global.u32 %r1479, [%rd7+5380];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1472,%r1473}, {%r1493,%r1494}, {%r1478}, {%r1430,%r1431};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1472,%r1473}, {%r1495,%r1496}, {%r1479}, {%r1472,%r1473};
+
+
+ld.global.u32 %r1488, [%rd7+13568];
+ld.global.u32 %r1489, [%rd7+13572];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1482,%r1483}, {%r1493,%r1494}, {%r1488}, {%r1440,%r1441};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1482,%r1483}, {%r1495,%r1496}, {%r1489}, {%r1482,%r1483};
+
+
+mov.u32 %r2150, %r2195;
+mov.u32 %r2151, %r2196;
+mov.u32 %r2152, %r2197;
+mov.u32 %r2153, %r2198;
+mov.u64 %rd181, %rd3;
+
+$L__BB0_89:
+.pragma "nounroll";
+and.b32 %r1497, %r2152, 112;
+and.b32 %r1498, %r2150, 128;
+or.b32 %r1499, %r1498, %r1497;
+shr.u32 %r1500, %r1499, 4;
+add.s32 %r1501, %r1500, %r13;
+and.b32 %r1502, %r1501, 15;
+shr.s32 %r1503, %r1501, 4;
+add.s32 %r374, %r1502, %r10;
+add.s32 %r375, %r11, %r1503;
+setp.ge.s32 %p89, %r375, %r562;
+setp.ge.s32 %p90, %r374, %r561;
+or.pred %p91, %p89, %p90;
+@%p91 bra $L__BB0_91;
+
+mad.lo.s32 %r1504, %r375, %r561, %r374;
+shl.b32 %r1505, %r1504, 9;
+and.b32 %r1506, %r2151, 8;
+shr.u32 %r1507, %r2153, 2;
+and.b32 %r1508, %r1507, 6;
+or.b32 %r1509, %r1506, %r1508;
+or.b32 %r1510, %r1505, %r1509;
+or.b32 %r1511, %r1510, 352;
+shr.s32 %r1512, %r1511, 1;
+mul.wide.s32 %rd129, %r1512, 4;
+add.s64 %rd130, %rd1, %rd129;
+ld.global.u32 %r1513, [%rd130];
+st.local.u32 [%rd181], %r1513;
+
+$L__BB0_91:
+add.s32 %r2154, %r2154, 2;
+add.s64 %rd181, %rd181, 4;
+add.s32 %r2153, %r2153, 2;
+add.s32 %r2152, %r2152, 1;
+add.s32 %r2151, %r2151, 4;
+add.s32 %r2150, %r2150, 128;
+setp.lt.u32 %p92, %r2154, 8;
+@%p92 bra $L__BB0_89;
+
+ld.local.v4.u32 {%r1535, %r1536, %r1537, %r1538}, [%rd3];
+mov.u32 %r2159, 0;
+ld.global.u32 %r1520, [%rd7+5632];
+ld.global.u32 %r1521, [%rd7+5636];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1514,%r1515}, {%r1535,%r1536}, {%r1520}, {%r1472,%r1473};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1514,%r1515}, {%r1537,%r1538}, {%r1521}, {%r1514,%r1515};
+
+
+ld.global.u32 %r1530, [%rd7+13824];
+ld.global.u32 %r1531, [%rd7+13828];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1524,%r1525}, {%r1535,%r1536}, {%r1530}, {%r1482,%r1483};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1524,%r1525}, {%r1537,%r1538}, {%r1531}, {%r1524,%r1525};
+
+
+mov.u32 %r2155, %r2195;
+mov.u32 %r2156, %r2196;
+mov.u32 %r2157, %r2197;
+mov.u32 %r2158, %r2198;
+mov.u64 %rd182, %rd3;
+
+$L__BB0_93:
+.pragma "nounroll";
+and.b32 %r1539, %r2157, 112;
+and.b32 %r1540, %r2155, 128;
+or.b32 %r1541, %r1540, %r1539;
+shr.u32 %r1542, %r1541, 4;
+add.s32 %r1543, %r1542, %r13;
+and.b32 %r1544, %r1543, 15;
+shr.s32 %r1545, %r1543, 4;
+add.s32 %r390, %r1544, %r10;
+add.s32 %r391, %r11, %r1545;
+setp.ge.s32 %p93, %r391, %r562;
+setp.ge.s32 %p94, %r390, %r561;
+or.pred %p95, %p93, %p94;
+@%p95 bra $L__BB0_95;
+
+mad.lo.s32 %r1546, %r391, %r561, %r390;
+shl.b32 %r1547, %r1546, 9;
+and.b32 %r1548, %r2156, 8;
+shr.u32 %r1549, %r2158, 2;
+and.b32 %r1550, %r1549, 6;
+or.b32 %r1551, %r1548, %r1550;
+or.b32 %r1552, %r1547, %r1551;
+or.b32 %r1553, %r1552, 368;
+shr.s32 %r1554, %r1553, 1;
+mul.wide.s32 %rd131, %r1554, 4;
+add.s64 %rd132, %rd1, %rd131;
+ld.global.u32 %r1555, [%rd132];
+st.local.u32 [%rd182], %r1555;
+
+$L__BB0_95:
+add.s32 %r2159, %r2159, 2;
+add.s64 %rd182, %rd182, 4;
+add.s32 %r2158, %r2158, 2;
+add.s32 %r2157, %r2157, 1;
+add.s32 %r2156, %r2156, 4;
+add.s32 %r2155, %r2155, 128;
+setp.lt.u32 %p96, %r2159, 8;
+@%p96 bra $L__BB0_93;
+
+ld.local.v4.u32 {%r1577, %r1578, %r1579, %r1580}, [%rd3];
+mov.u32 %r2164, 0;
+ld.global.u32 %r1562, [%rd7+5888];
+ld.global.u32 %r1563, [%rd7+5892];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1556,%r1557}, {%r1577,%r1578}, {%r1562}, {%r1514,%r1515};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1556,%r1557}, {%r1579,%r1580}, {%r1563}, {%r1556,%r1557};
+
+
+ld.global.u32 %r1572, [%rd7+14080];
+ld.global.u32 %r1573, [%rd7+14084];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1566,%r1567}, {%r1577,%r1578}, {%r1572}, {%r1524,%r1525};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1566,%r1567}, {%r1579,%r1580}, {%r1573}, {%r1566,%r1567};
+
+
+mov.u32 %r2160, %r2195;
+mov.u32 %r2161, %r2196;
+mov.u32 %r2162, %r2197;
+mov.u32 %r2163, %r2198;
+mov.u64 %rd183, %rd3;
+
+$L__BB0_97:
+.pragma "nounroll";
+and.b32 %r1581, %r2162, 112;
+and.b32 %r1582, %r2160, 128;
+or.b32 %r1583, %r1582, %r1581;
+shr.u32 %r1584, %r1583, 4;
+add.s32 %r1585, %r1584, %r13;
+and.b32 %r1586, %r1585, 15;
+shr.s32 %r1587, %r1585, 4;
+add.s32 %r406, %r1586, %r10;
+add.s32 %r407, %r11, %r1587;
+setp.ge.s32 %p97, %r407, %r562;
+setp.ge.s32 %p98, %r406, %r561;
+or.pred %p99, %p97, %p98;
+@%p99 bra $L__BB0_99;
+
+mad.lo.s32 %r1588, %r407, %r561, %r406;
+shl.b32 %r1589, %r1588, 9;
+and.b32 %r1590, %r2161, 8;
+shr.u32 %r1591, %r2163, 2;
+and.b32 %r1592, %r1591, 6;
+or.b32 %r1593, %r1590, %r1592;
+or.b32 %r1594, %r1589, %r1593;
+or.b32 %r1595, %r1594, 384;
+shr.s32 %r1596, %r1595, 1;
+mul.wide.s32 %rd133, %r1596, 4;
+add.s64 %rd134, %rd1, %rd133;
+ld.global.u32 %r1597, [%rd134];
+st.local.u32 [%rd183], %r1597;
+
+$L__BB0_99:
+add.s32 %r2164, %r2164, 2;
+add.s64 %rd183, %rd183, 4;
+add.s32 %r2163, %r2163, 2;
+add.s32 %r2162, %r2162, 1;
+add.s32 %r2161, %r2161, 4;
+add.s32 %r2160, %r2160, 128;
+setp.lt.u32 %p100, %r2164, 8;
+@%p100 bra $L__BB0_97;
+
+ld.local.v4.u32 {%r1619, %r1620, %r1621, %r1622}, [%rd3];
+mov.u32 %r2169, 0;
+ld.global.u32 %r1604, [%rd7+6144];
+ld.global.u32 %r1605, [%rd7+6148];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1598,%r1599}, {%r1619,%r1620}, {%r1604}, {%r1556,%r1557};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1598,%r1599}, {%r1621,%r1622}, {%r1605}, {%r1598,%r1599};
+
+
+ld.global.u32 %r1614, [%rd7+14336];
+ld.global.u32 %r1615, [%rd7+14340];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1608,%r1609}, {%r1619,%r1620}, {%r1614}, {%r1566,%r1567};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1608,%r1609}, {%r1621,%r1622}, {%r1615}, {%r1608,%r1609};
+
+
+mov.u32 %r2165, %r2195;
+mov.u32 %r2166, %r2196;
+mov.u32 %r2167, %r2197;
+mov.u32 %r2168, %r2198;
+mov.u64 %rd184, %rd3;
+
+$L__BB0_101:
+.pragma "nounroll";
+and.b32 %r1623, %r2167, 112;
+and.b32 %r1624, %r2165, 128;
+or.b32 %r1625, %r1624, %r1623;
+shr.u32 %r1626, %r1625, 4;
+add.s32 %r1627, %r1626, %r13;
+and.b32 %r1628, %r1627, 15;
+shr.s32 %r1629, %r1627, 4;
+add.s32 %r422, %r1628, %r10;
+add.s32 %r423, %r11, %r1629;
+setp.ge.s32 %p101, %r423, %r562;
+setp.ge.s32 %p102, %r422, %r561;
+or.pred %p103, %p101, %p102;
+@%p103 bra $L__BB0_103;
+
+mad.lo.s32 %r1630, %r423, %r561, %r422;
+shl.b32 %r1631, %r1630, 9;
+and.b32 %r1632, %r2166, 8;
+shr.u32 %r1633, %r2168, 2;
+and.b32 %r1634, %r1633, 6;
+or.b32 %r1635, %r1632, %r1634;
+or.b32 %r1636, %r1631, %r1635;
+or.b32 %r1637, %r1636, 400;
+shr.s32 %r1638, %r1637, 1;
+mul.wide.s32 %rd135, %r1638, 4;
+add.s64 %rd136, %rd1, %rd135;
+ld.global.u32 %r1639, [%rd136];
+st.local.u32 [%rd184], %r1639;
+
+$L__BB0_103:
+add.s32 %r2169, %r2169, 2;
+add.s64 %rd184, %rd184, 4;
+add.s32 %r2168, %r2168, 2;
+add.s32 %r2167, %r2167, 1;
+add.s32 %r2166, %r2166, 4;
+add.s32 %r2165, %r2165, 128;
+setp.lt.u32 %p104, %r2169, 8;
+@%p104 bra $L__BB0_101;
+
+ld.local.v4.u32 {%r1661, %r1662, %r1663, %r1664}, [%rd3];
+mov.u32 %r2174, 0;
+ld.global.u32 %r1646, [%rd7+6400];
+ld.global.u32 %r1647, [%rd7+6404];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1640,%r1641}, {%r1661,%r1662}, {%r1646}, {%r1598,%r1599};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1640,%r1641}, {%r1663,%r1664}, {%r1647}, {%r1640,%r1641};
+
+
+ld.global.u32 %r1656, [%rd7+14592];
+ld.global.u32 %r1657, [%rd7+14596];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1650,%r1651}, {%r1661,%r1662}, {%r1656}, {%r1608,%r1609};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1650,%r1651}, {%r1663,%r1664}, {%r1657}, {%r1650,%r1651};
+
+
+mov.u32 %r2170, %r2195;
+mov.u32 %r2171, %r2196;
+mov.u32 %r2172, %r2197;
+mov.u32 %r2173, %r2198;
+mov.u64 %rd185, %rd3;
+
+$L__BB0_105:
+.pragma "nounroll";
+and.b32 %r1665, %r2172, 112;
+and.b32 %r1666, %r2170, 128;
+or.b32 %r1667, %r1666, %r1665;
+shr.u32 %r1668, %r1667, 4;
+add.s32 %r1669, %r1668, %r13;
+and.b32 %r1670, %r1669, 15;
+shr.s32 %r1671, %r1669, 4;
+add.s32 %r438, %r1670, %r10;
+add.s32 %r439, %r11, %r1671;
+setp.ge.s32 %p105, %r439, %r562;
+setp.ge.s32 %p106, %r438, %r561;
+or.pred %p107, %p105, %p106;
+@%p107 bra $L__BB0_107;
+
+mad.lo.s32 %r1672, %r439, %r561, %r438;
+shl.b32 %r1673, %r1672, 9;
+and.b32 %r1674, %r2171, 8;
+shr.u32 %r1675, %r2173, 2;
+and.b32 %r1676, %r1675, 6;
+or.b32 %r1677, %r1674, %r1676;
+or.b32 %r1678, %r1673, %r1677;
+or.b32 %r1679, %r1678, 416;
+shr.s32 %r1680, %r1679, 1;
+mul.wide.s32 %rd137, %r1680, 4;
+add.s64 %rd138, %rd1, %rd137;
+ld.global.u32 %r1681, [%rd138];
+st.local.u32 [%rd185], %r1681;
+
+$L__BB0_107:
+add.s32 %r2174, %r2174, 2;
+add.s64 %rd185, %rd185, 4;
+add.s32 %r2173, %r2173, 2;
+add.s32 %r2172, %r2172, 1;
+add.s32 %r2171, %r2171, 4;
+add.s32 %r2170, %r2170, 128;
+setp.lt.u32 %p108, %r2174, 8;
+@%p108 bra $L__BB0_105;
+
+ld.local.v4.u32 {%r1703, %r1704, %r1705, %r1706}, [%rd3];
+mov.u32 %r2179, 0;
+ld.global.u32 %r1688, [%rd7+6656];
+ld.global.u32 %r1689, [%rd7+6660];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1682,%r1683}, {%r1703,%r1704}, {%r1688}, {%r1640,%r1641};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1682,%r1683}, {%r1705,%r1706}, {%r1689}, {%r1682,%r1683};
+
+
+ld.global.u32 %r1698, [%rd7+14848];
+ld.global.u32 %r1699, [%rd7+14852];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1692,%r1693}, {%r1703,%r1704}, {%r1698}, {%r1650,%r1651};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1692,%r1693}, {%r1705,%r1706}, {%r1699}, {%r1692,%r1693};
+
+
+mov.u32 %r2175, %r2195;
+mov.u32 %r2176, %r2196;
+mov.u32 %r2177, %r2197;
+mov.u32 %r2178, %r2198;
+mov.u64 %rd186, %rd3;
+
+$L__BB0_109:
+.pragma "nounroll";
+and.b32 %r1707, %r2177, 112;
+and.b32 %r1708, %r2175, 128;
+or.b32 %r1709, %r1708, %r1707;
+shr.u32 %r1710, %r1709, 4;
+add.s32 %r1711, %r1710, %r13;
+and.b32 %r1712, %r1711, 15;
+shr.s32 %r1713, %r1711, 4;
+add.s32 %r454, %r1712, %r10;
+add.s32 %r455, %r11, %r1713;
+setp.ge.s32 %p109, %r455, %r562;
+setp.ge.s32 %p110, %r454, %r561;
+or.pred %p111, %p109, %p110;
+@%p111 bra $L__BB0_111;
+
+mad.lo.s32 %r1714, %r455, %r561, %r454;
+shl.b32 %r1715, %r1714, 9;
+and.b32 %r1716, %r2176, 8;
+shr.u32 %r1717, %r2178, 2;
+and.b32 %r1718, %r1717, 6;
+or.b32 %r1719, %r1716, %r1718;
+or.b32 %r1720, %r1715, %r1719;
+or.b32 %r1721, %r1720, 432;
+shr.s32 %r1722, %r1721, 1;
+mul.wide.s32 %rd139, %r1722, 4;
+add.s64 %rd140, %rd1, %rd139;
+ld.global.u32 %r1723, [%rd140];
+st.local.u32 [%rd186], %r1723;
+
+$L__BB0_111:
+add.s32 %r2179, %r2179, 2;
+add.s64 %rd186, %rd186, 4;
+add.s32 %r2178, %r2178, 2;
+add.s32 %r2177, %r2177, 1;
+add.s32 %r2176, %r2176, 4;
+add.s32 %r2175, %r2175, 128;
+setp.lt.u32 %p112, %r2179, 8;
+@%p112 bra $L__BB0_109;
+
+ld.local.v4.u32 {%r1745, %r1746, %r1747, %r1748}, [%rd3];
+mov.u32 %r2184, 0;
+ld.global.u32 %r1730, [%rd7+6912];
+ld.global.u32 %r1731, [%rd7+6916];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1724,%r1725}, {%r1745,%r1746}, {%r1730}, {%r1682,%r1683};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1724,%r1725}, {%r1747,%r1748}, {%r1731}, {%r1724,%r1725};
+
+
+ld.global.u32 %r1740, [%rd7+15104];
+ld.global.u32 %r1741, [%rd7+15108];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1734,%r1735}, {%r1745,%r1746}, {%r1740}, {%r1692,%r1693};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1734,%r1735}, {%r1747,%r1748}, {%r1741}, {%r1734,%r1735};
+
+
+mov.u32 %r2180, %r2195;
+mov.u32 %r2181, %r2196;
+mov.u32 %r2182, %r2197;
+mov.u32 %r2183, %r2198;
+mov.u64 %rd187, %rd3;
+
+$L__BB0_113:
+.pragma "nounroll";
+and.b32 %r1749, %r2182, 112;
+and.b32 %r1750, %r2180, 128;
+or.b32 %r1751, %r1750, %r1749;
+shr.u32 %r1752, %r1751, 4;
+add.s32 %r1753, %r1752, %r13;
+and.b32 %r1754, %r1753, 15;
+shr.s32 %r1755, %r1753, 4;
+add.s32 %r470, %r1754, %r10;
+add.s32 %r471, %r11, %r1755;
+setp.ge.s32 %p113, %r471, %r562;
+setp.ge.s32 %p114, %r470, %r561;
+or.pred %p115, %p113, %p114;
+@%p115 bra $L__BB0_115;
+
+mad.lo.s32 %r1756, %r471, %r561, %r470;
+shl.b32 %r1757, %r1756, 9;
+and.b32 %r1758, %r2181, 8;
+shr.u32 %r1759, %r2183, 2;
+and.b32 %r1760, %r1759, 6;
+or.b32 %r1761, %r1758, %r1760;
+or.b32 %r1762, %r1757, %r1761;
+or.b32 %r1763, %r1762, 448;
+shr.s32 %r1764, %r1763, 1;
+mul.wide.s32 %rd141, %r1764, 4;
+add.s64 %rd142, %rd1, %rd141;
+ld.global.u32 %r1765, [%rd142];
+st.local.u32 [%rd187], %r1765;
+
+$L__BB0_115:
+add.s32 %r2184, %r2184, 2;
+add.s64 %rd187, %rd187, 4;
+add.s32 %r2183, %r2183, 2;
+add.s32 %r2182, %r2182, 1;
+add.s32 %r2181, %r2181, 4;
+add.s32 %r2180, %r2180, 128;
+setp.lt.u32 %p116, %r2184, 8;
+@%p116 bra $L__BB0_113;
+
+ld.local.v4.u32 {%r1787, %r1788, %r1789, %r1790}, [%rd3];
+mov.u32 %r2189, 0;
+ld.global.u32 %r1772, [%rd7+7168];
+ld.global.u32 %r1773, [%rd7+7172];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1766,%r1767}, {%r1787,%r1788}, {%r1772}, {%r1724,%r1725};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1766,%r1767}, {%r1789,%r1790}, {%r1773}, {%r1766,%r1767};
+
+
+ld.global.u32 %r1782, [%rd7+15360];
+ld.global.u32 %r1783, [%rd7+15364];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1776,%r1777}, {%r1787,%r1788}, {%r1782}, {%r1734,%r1735};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1776,%r1777}, {%r1789,%r1790}, {%r1783}, {%r1776,%r1777};
+
+
+mov.u32 %r2185, %r2195;
+mov.u32 %r2186, %r2196;
+mov.u32 %r2187, %r2197;
+mov.u32 %r2188, %r2198;
+mov.u64 %rd188, %rd3;
+
+$L__BB0_117:
+.pragma "nounroll";
+and.b32 %r1791, %r2187, 112;
+and.b32 %r1792, %r2185, 128;
+or.b32 %r1793, %r1792, %r1791;
+shr.u32 %r1794, %r1793, 4;
+add.s32 %r1795, %r1794, %r13;
+and.b32 %r1796, %r1795, 15;
+shr.s32 %r1797, %r1795, 4;
+add.s32 %r486, %r1796, %r10;
+add.s32 %r487, %r11, %r1797;
+setp.ge.s32 %p117, %r487, %r562;
+setp.ge.s32 %p118, %r486, %r561;
+or.pred %p119, %p117, %p118;
+@%p119 bra $L__BB0_119;
+
+mad.lo.s32 %r1798, %r487, %r561, %r486;
+shl.b32 %r1799, %r1798, 9;
+and.b32 %r1800, %r2186, 8;
+shr.u32 %r1801, %r2188, 2;
+and.b32 %r1802, %r1801, 6;
+or.b32 %r1803, %r1800, %r1802;
+or.b32 %r1804, %r1799, %r1803;
+or.b32 %r1805, %r1804, 464;
+shr.s32 %r1806, %r1805, 1;
+mul.wide.s32 %rd143, %r1806, 4;
+add.s64 %rd144, %rd1, %rd143;
+ld.global.u32 %r1807, [%rd144];
+st.local.u32 [%rd188], %r1807;
+
+$L__BB0_119:
+add.s32 %r2189, %r2189, 2;
+add.s64 %rd188, %rd188, 4;
+add.s32 %r2188, %r2188, 2;
+add.s32 %r2187, %r2187, 1;
+add.s32 %r2186, %r2186, 4;
+add.s32 %r2185, %r2185, 128;
+setp.lt.u32 %p120, %r2189, 8;
+@%p120 bra $L__BB0_117;
+
+ld.local.v4.u32 {%r1829, %r1830, %r1831, %r1832}, [%rd3];
+mov.u32 %r2194, 0;
+ld.global.u32 %r1814, [%rd7+7424];
+ld.global.u32 %r1815, [%rd7+7428];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1808,%r1809}, {%r1829,%r1830}, {%r1814}, {%r1766,%r1767};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1808,%r1809}, {%r1831,%r1832}, {%r1815}, {%r1808,%r1809};
+
+
+ld.global.u32 %r1824, [%rd7+15616];
+ld.global.u32 %r1825, [%rd7+15620];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1818,%r1819}, {%r1829,%r1830}, {%r1824}, {%r1776,%r1777};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1818,%r1819}, {%r1831,%r1832}, {%r1825}, {%r1818,%r1819};
+
+
+mov.u32 %r2190, %r2195;
+mov.u32 %r2191, %r2196;
+mov.u32 %r2192, %r2197;
+mov.u32 %r2193, %r2198;
+mov.u64 %rd189, %rd3;
+
+$L__BB0_121:
+.pragma "nounroll";
+and.b32 %r1833, %r2192, 112;
+and.b32 %r1834, %r2190, 128;
+or.b32 %r1835, %r1834, %r1833;
+shr.u32 %r1836, %r1835, 4;
+add.s32 %r1837, %r1836, %r13;
+and.b32 %r1838, %r1837, 15;
+shr.s32 %r1839, %r1837, 4;
+add.s32 %r502, %r1838, %r10;
+add.s32 %r503, %r11, %r1839;
+setp.ge.s32 %p121, %r503, %r562;
+setp.ge.s32 %p122, %r502, %r561;
+or.pred %p123, %p121, %p122;
+@%p123 bra $L__BB0_123;
+
+mad.lo.s32 %r1840, %r503, %r561, %r502;
+shl.b32 %r1841, %r1840, 9;
+and.b32 %r1842, %r2191, 8;
+shr.u32 %r1843, %r2193, 2;
+and.b32 %r1844, %r1843, 6;
+or.b32 %r1845, %r1842, %r1844;
+or.b32 %r1846, %r1841, %r1845;
+or.b32 %r1847, %r1846, 480;
+shr.s32 %r1848, %r1847, 1;
+mul.wide.s32 %rd145, %r1848, 4;
+add.s64 %rd146, %rd1, %rd145;
+ld.global.u32 %r1849, [%rd146];
+st.local.u32 [%rd189], %r1849;
+
+$L__BB0_123:
+add.s32 %r2194, %r2194, 2;
+add.s64 %rd189, %rd189, 4;
+add.s32 %r2193, %r2193, 2;
+add.s32 %r2192, %r2192, 1;
+add.s32 %r2191, %r2191, 4;
+add.s32 %r2190, %r2190, 128;
+setp.lt.u32 %p124, %r2194, 8;
+@%p124 bra $L__BB0_121;
+
+ld.local.v4.u32 {%r1871, %r1872, %r1873, %r1874}, [%rd3];
+mov.u32 %r2199, 0;
+ld.global.u32 %r1856, [%rd7+7680];
+ld.global.u32 %r1857, [%rd7+7684];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1850,%r1851}, {%r1871,%r1872}, {%r1856}, {%r1808,%r1809};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1850,%r1851}, {%r1873,%r1874}, {%r1857}, {%r1850,%r1851};
+
+
+ld.global.u32 %r1866, [%rd7+15872];
+ld.global.u32 %r1867, [%rd7+15876];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1860,%r1861}, {%r1871,%r1872}, {%r1866}, {%r1818,%r1819};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1860,%r1861}, {%r1873,%r1874}, {%r1867}, {%r1860,%r1861};
+
+
+mov.u64 %rd190, %rd3;
+
+$L__BB0_125:
+.pragma "nounroll";
+and.b32 %r1875, %r2197, 112;
+and.b32 %r1876, %r2195, 128;
+or.b32 %r1877, %r1876, %r1875;
+shr.u32 %r1878, %r1877, 4;
+add.s32 %r1879, %r1878, %r13;
+and.b32 %r1880, %r1879, 15;
+shr.s32 %r1881, %r1879, 4;
+add.s32 %r518, %r1880, %r10;
+add.s32 %r519, %r11, %r1881;
+setp.ge.s32 %p125, %r519, %r562;
+setp.ge.s32 %p126, %r518, %r561;
+or.pred %p127, %p125, %p126;
+@%p127 bra $L__BB0_127;
+
+mad.lo.s32 %r1882, %r519, %r561, %r518;
+shl.b32 %r1883, %r1882, 9;
+and.b32 %r1884, %r2196, 8;
+shr.u32 %r1885, %r2198, 2;
+and.b32 %r1886, %r1885, 6;
+or.b32 %r1887, %r1884, %r1886;
+or.b32 %r1888, %r1883, %r1887;
+or.b32 %r1889, %r1888, 496;
+shr.s32 %r1890, %r1889, 1;
+mul.wide.s32 %rd147, %r1890, 4;
+add.s64 %rd148, %rd1, %rd147;
+ld.global.u32 %r1891, [%rd148];
+st.local.u32 [%rd190], %r1891;
+
+$L__BB0_127:
+add.s32 %r2199, %r2199, 2;
+add.s64 %rd190, %rd190, 4;
+add.s32 %r2198, %r2198, 2;
+add.s32 %r2197, %r2197, 1;
+add.s32 %r2196, %r2196, 4;
+add.s32 %r2195, %r2195, 128;
+setp.lt.u32 %p128, %r2199, 8;
+@%p128 bra $L__BB0_125;
+
+ld.local.v4.u32 {%r1912, %r1913, %r1914, %r1915}, [%rd3];
+ld.global.u32 %r1898, [%rd7+7936];
+ld.global.u32 %r1899, [%rd7+7940];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1892,%r1893}, {%r1912,%r1913}, {%r1898}, {%r1850,%r1851};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1892,%r1893}, {%r1914,%r1915}, {%r1899}, {%r1892,%r1893};
+
+
+ld.global.u32 %r1908, [%rd7+16128];
+ld.global.u32 %r1909, [%rd7+16132];
+
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1902,%r1903}, {%r1912,%r1913}, {%r1908}, {%r1860,%r1861};
+mma.sync.aligned.m16n8k8.row.col.f16.f16.f16.f16 {%r1902,%r1903}, {%r1914,%r1915}, {%r1909}, {%r1902,%r1903};
+
+
+mov.f32 %f1, 0f3C23D70A;
+
+{ cvt.rn.f16.f32 %rs1, %f1;}
+
+
+mov.b32 {%rs6, %rs12}, %r1892;
+
+{mul.f16 %rs2,%rs1,%rs6;
+}
+
+
+{mul.f16 %rs8,%rs1,%rs12;
+}
+
+
+cvt.f32.f16 %f900, %rs12;
+cvt.f32.f16 %f901, %rs8;
+max.f32 %f902, %f900, %f901;
+cvt.rn.f16.f32 %rs11, %f902;
+
+
+cvt.f32.f16 %f903, %rs6;
+cvt.f32.f16 %f904, %rs2;
+max.f32 %f905, %f903, %f904;
+cvt.rn.f16.f32 %rs5, %f905;
+
+mov.b32 {%rs18, %rs24}, %r1893;
+
+{mul.f16 %rs14,%rs1,%rs18;
+}
+
+
+{mul.f16 %rs20,%rs1,%rs24;
+}
+
+
+cvt.f32.f16 %f906, %rs24;
+cvt.f32.f16 %f907, %rs20;
+max.f32 %f908, %f906, %f907;
+cvt.rn.f16.f32 %rs23, %f908;
+
+
+cvt.f32.f16 %f909, %rs18;
+cvt.f32.f16 %f910, %rs14;
+max.f32 %f911, %f909, %f910;
+cvt.rn.f16.f32 %rs17, %f911;
+
+mov.b32 {%rs30, %rs36}, %r1902;
+
+{mul.f16 %rs26,%rs1,%rs30;
+}
+
+
+{mul.f16 %rs32,%rs1,%rs36;
+}
+
+
+cvt.f32.f16 %f912, %rs36;
+cvt.f32.f16 %f913, %rs32;
+max.f32 %f914, %f912, %f913;
+cvt.rn.f16.f32 %rs35, %f914;
+
+
+cvt.f32.f16 %f915, %rs30;
+cvt.f32.f16 %f916, %rs26;
+max.f32 %f917, %f915, %f916;
+cvt.rn.f16.f32 %rs29, %f917;
+
+mov.b32 {%rs42, %rs48}, %r1903;
+
+{mul.f16 %rs38,%rs1,%rs42;
+}
+
+
+{mul.f16 %rs44,%rs1,%rs48;
+}
+
+
+cvt.f32.f16 %f918, %rs48;
+cvt.f32.f16 %f919, %rs44;
+max.f32 %f920, %f918, %f919;
+cvt.rn.f16.f32 %rs47, %f920;
+
+
+cvt.f32.f16 %f921, %rs42;
+cvt.f32.f16 %f922, %rs38;
+max.f32 %f923, %f921, %f922;
+cvt.rn.f16.f32 %rs41, %f923;
+
+bar.sync 0;
+shl.b32 %r525, %r2, 1;
+shr.u32 %r1916, %r2, 2;
+and.b32 %r1917, %r1916, 7;
+add.s32 %r1918, %r1917, %r13;
+and.b32 %r1919, %r525, 6;
+shl.b32 %r1920, %r1918, 4;
+or.b32 %r1921, %r1920, %r1919;
+shl.b32 %r1922, %r1921, 1;
+mov.u32 %r1923, _ZZ16k_conv_fp16_nhwcE6buffer;
+add.s32 %r1924, %r1923, %r1922;
+st.shared.v2.u16 [%r1924], {%rs5, %rs11};
+st.shared.v2.u16 [%r1924+16], {%rs29, %rs35};
+add.s32 %r1925, %r4, 2;
+shr.u32 %r1926, %r1925, 1;
+and.b32 %r1927, %r1926, 56;
+or.b32 %r1928, %r1927, 64;
+shr.u32 %r1929, %r1928, 3;
+add.s32 %r1930, %r1929, %r13;
+and.b32 %r1931, %r1926, 6;
+shl.b32 %r1932, %r1930, 4;
+or.b32 %r1933, %r1932, %r1931;
+shl.b32 %r1934, %r1933, 1;
+add.s32 %r1935, %r1923, %r1934;
+st.shared.v2.u16 [%r1935], {%rs17, %rs23};
+st.shared.v2.u16 [%r1935+16], {%rs41, %rs47};
+bar.sync 0;
+setp.gt.s32 %p129, %r3, 127;
+@%p129 bra $L__BB0_145;
+
+shl.b32 %r2203, %r3, 1;
+shl.b32 %r527, %r5, 4;
+max.s32 %r1936, %r2203, 192;
+add.s32 %r1937, %r1936, 63;
+sub.s32 %r528, %r1937, %r2203;
+shr.u32 %r1938, %r528, 6;
+add.s32 %r1939, %r1938, 1;
+and.b32 %r2202, %r1939, 3;
+setp.eq.s32 %p130, %r2202, 0;
+@%p130 bra $L__BB0_134;
+
+shl.b32 %r1940, %r1, 1;
+add.s32 %r2203, %r1940, %r525;
+shl.b32 %r1941, %r2203, 1;
+add.s32 %r2200, %r1923, %r1941;
+
+$L__BB0_131:
+.pragma "nounroll";
+shr.s32 %r1943, %r2203, 4;
+shr.s32 %r1944, %r2203, 31;
+shr.u32 %r1945, %r1944, 28;
+add.s32 %r1946, %r1943, %r1945;
+and.b32 %r1947, %r1946, -16;
+sub.s32 %r1948, %r1943, %r1947;
+add.s32 %r535, %r1948, %r10;
+shr.s32 %r1949, %r1946, 4;
+add.s32 %r536, %r1949, %r11;
+setp.ge.s32 %p131, %r535, %r563;
+setp.ge.s32 %p132, %r536, %r564;
+or.pred %p133, %p131, %p132;
+@%p133 bra $L__BB0_133;
+
+add.s32 %r1952, %r2203, %r1945;
+and.b32 %r1953, %r1952, -16;
+sub.s32 %r1954, %r2203, %r1953;
+add.s32 %r1955, %r1954, %r527;
+mad.lo.s32 %r1956, %r536, %r563, %r535;
+shl.b32 %r1957, %r1956, 8;
+add.s32 %r1958, %r1955, %r1957;
+shr.s32 %r1959, %r1958, 1;
+mul.wide.s32 %rd149, %r1959, 4;
+add.s64 %rd150, %rd2, %rd149;
+ld.shared.u32 %r1960, [%r2200];
+st.global.u32 [%rd150], %r1960;
+
+$L__BB0_133:
+add.s32 %r2202, %r2202, -1;
+add.s32 %r2203, %r2203, 64;
+add.s32 %r2200, %r2200, 128;
+setp.ne.s32 %p134, %r2202, 0;
+@%p134 bra $L__BB0_131;
+
+$L__BB0_134:
+setp.lt.u32 %p135, %r528, 192;
+@%p135 bra $L__BB0_145;
+
+add.s32 %r2206, %r2203, -256;
+shl.b32 %r1961, %r2203, 1;
+add.s32 %r1963, %r1923, %r1961;
+add.s32 %r2205, %r1963, 256;
+add.s32 %r2204, %r2203, 64;
+
+$L__BB0_136:
+add.s32 %r547, %r2206, 256;
+shr.s32 %r1964, %r547, 4;
+shr.s32 %r1965, %r547, 31;
+shr.u32 %r1966, %r1965, 28;
+add.s32 %r1967, %r1964, %r1966;
+and.b32 %r1968, %r1967, -16;
+sub.s32 %r1969, %r1964, %r1968;
+add.s32 %r548, %r1969, %r10;
+shr.s32 %r1970, %r1967, 4;
+add.s32 %r549, %r1970, %r11;
+setp.ge.s32 %p136, %r548, %r563;
+setp.ge.s32 %p137, %r549, %r564;
+or.pred %p138, %p136, %p137;
+@%p138 bra $L__BB0_138;
+
+add.s32 %r1973, %r547, %r1966;
+and.b32 %r1974, %r1973, -16;
+sub.s32 %r1975, %r547, %r1974;
+add.s32 %r1976, %r1975, %r527;
+mad.lo.s32 %r1977, %r549, %r563, %r548;
+shl.b32 %r1978, %r1977, 8;
+add.s32 %r1979, %r1976, %r1978;
+shr.s32 %r1980, %r1979, 1;
+mul.wide.s32 %rd151, %r1980, 4;
+add.s64 %rd152, %rd2, %rd151;
+add.s32 %r2036, %r2205, -256;
+ld.shared.u32 %r1981, [%r2036];
+st.global.u32 [%rd152], %r1981;
+
+$L__BB0_138:
+shr.s32 %r1982, %r2204, 4;
+shr.s32 %r1983, %r2204, 31;
+shr.u32 %r1984, %r1983, 28;
+add.s32 %r1985, %r1982, %r1984;
+and.b32 %r1986, %r1985, -16;
+sub.s32 %r1987, %r1982, %r1986;
+add.s32 %r551, %r1987, %r10;
+shr.s32 %r1988, %r1985, 4;
+add.s32 %r552, %r1988, %r11;
+setp.ge.s32 %p139, %r551, %r563;
+setp.ge.s32 %p140, %r552, %r564;
+or.pred %p141, %p139, %p140;
+@%p141 bra $L__BB0_140;
+
+add.s32 %r1991, %r2204, %r1984;
+and.b32 %r1992, %r1991, -16;
+sub.s32 %r1993, %r2204, %r1992;
+add.s32 %r1994, %r1993, %r527;
+mad.lo.s32 %r1995, %r552, %r563, %r551;
+shl.b32 %r1996, %r1995, 8;
+add.s32 %r1997, %r1994, %r1996;
+shr.s32 %r1998, %r1997, 1;
+mul.wide.s32 %rd153, %r1998, 4;
+add.s64 %rd154, %rd2, %rd153;
+add.s32 %r2037, %r2205, -256;
+ld.shared.u32 %r1999, [%r2037+128];
+st.global.u32 [%rd154], %r1999;
+
+$L__BB0_140:
+add.s32 %r553, %r2206, 384;
+shr.s32 %r2000, %r553, 4;
+shr.s32 %r2001, %r553, 31;
+shr.u32 %r2002, %r2001, 28;
+add.s32 %r2003, %r2000, %r2002;
+and.b32 %r2004, %r2003, -16;
+sub.s32 %r2005, %r2000, %r2004;
+add.s32 %r554, %r2005, %r10;
+shr.s32 %r2006, %r2003, 4;
+add.s32 %r555, %r2006, %r11;
+setp.ge.s32 %p142, %r554, %r563;
+setp.ge.s32 %p143, %r555, %r564;
+or.pred %p144, %p142, %p143;
+@%p144 bra $L__BB0_142;
+
+add.s32 %r2009, %r553, %r2002;
+and.b32 %r2010, %r2009, -16;
+sub.s32 %r2011, %r553, %r2010;
+add.s32 %r2012, %r2011, %r527;
+mad.lo.s32 %r2013, %r555, %r563, %r554;
+shl.b32 %r2014, %r2013, 8;
+add.s32 %r2015, %r2012, %r2014;
+shr.s32 %r2016, %r2015, 1;
+mul.wide.s32 %rd155, %r2016, 4;
+add.s64 %rd156, %rd2, %rd155;
+add.s32 %r2038, %r2205, -256;
+ld.shared.u32 %r2017, [%r2038+256];
+st.global.u32 [%rd156], %r2017;
+
+$L__BB0_142:
+add.s32 %r556, %r2206, 448;
+shr.s32 %r2018, %r556, 4;
+shr.s32 %r2019, %r556, 31;
+shr.u32 %r2020, %r2019, 28;
+add.s32 %r2021, %r2018, %r2020;
+and.b32 %r2022, %r2021, -16;
+sub.s32 %r2023, %r2018, %r2022;
+add.s32 %r557, %r2023, %r10;
+shr.s32 %r2024, %r2021, 4;
+add.s32 %r558, %r2024, %r11;
+setp.ge.s32 %p145, %r557, %r563;
+setp.ge.s32 %p146, %r558, %r564;
+or.pred %p147, %p145, %p146;
+@%p147 bra $L__BB0_144;
+
+add.s32 %r2027, %r556, %r2020;
+and.b32 %r2028, %r2027, -16;
+sub.s32 %r2029, %r556, %r2028;
+add.s32 %r2030, %r2029, %r527;
+mad.lo.s32 %r2031, %r558, %r563, %r557;
+shl.b32 %r2032, %r2031, 8;
+add.s32 %r2033, %r2030, %r2032;
+shr.s32 %r2034, %r2033, 1;
+mul.wide.s32 %rd157, %r2034, 4;
+add.s64 %rd158, %rd2, %rd157;
+add.s32 %r2039, %r2205, -256;
+ld.shared.u32 %r2035, [%r2039+384];
+st.global.u32 [%rd158], %r2035;
+
+$L__BB0_144:
+add.s32 %r2205, %r2205, 512;
+add.s32 %r2204, %r2204, 256;
+setp.lt.s32 %p148, %r547, 0;
+mov.u32 %r2206, %r547;
+@%p148 bra $L__BB0_136;
+
+$L__BB0_145:
+ret;
+
+}

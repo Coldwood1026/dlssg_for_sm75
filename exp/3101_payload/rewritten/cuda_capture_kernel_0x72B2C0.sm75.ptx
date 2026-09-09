@@ -1,0 +1,137 @@
+
+//
+//
+//
+//
+//
+//
+
+.version 8.7
+.target sm_75
+.address_size 64
+
+//
+
+.visible .entry cuda_capture_kernel(
+.param .align 8 .b8 cuda_capture_kernel_param_0[48]
+)
+.maxntid 256, 1, 1
+{
+.reg .pred %p<12>;
+.reg .b16 %rs<2>;
+.reg .f32 %f<9>;
+.reg .b32 %r<31>;
+.reg .b64 %rd<14>;
+
+
+ld.param.v2.u32 {%r12, %r13}, [cuda_capture_kernel_param_0+8];
+ld.param.v2.u32 {%r14, %r15}, [cuda_capture_kernel_param_0];
+ld.param.v2.u32 {%r16, %r17}, [cuda_capture_kernel_param_0+16];
+ld.param.u64 %rd6, [cuda_capture_kernel_param_0+40];
+ld.param.u64 %rd7, [cuda_capture_kernel_param_0+32];
+mov.u32 %r18, %ctaid.x;
+shl.b32 %r19, %r18, 4;
+mov.u32 %r20, %tid.x;
+add.s32 %r2, %r19, %r20;
+mov.u32 %r21, %ctaid.y;
+shl.b32 %r22, %r21, 4;
+mov.u32 %r23, %tid.y;
+add.s32 %r3, %r22, %r23;
+setp.ge.s32 %p1, %r2, %r12;
+setp.ge.s32 %p2, %r3, %r13;
+or.pred %p3, %p2, %p1;
+@%p3 bra $L__BB0_16;
+bra.uni $L__BB0_1;
+
+$L__BB0_16:
+ret;
+
+$L__BB0_1:
+cvta.to.global.u64 %rd1, %rd6;
+add.s32 %r24, %r14, %r2;
+add.s32 %r25, %r15, %r3;
+//
+tex.base.2d.v4.f32.s32 {%f5,%f6,%f7,%f8}, [%rd7, {%r24,%r25}];
+//
+mad.lo.s32 %r26, %r12, %r3, %r2;
+mul.lo.s32 %r5, %r26, %r16;
+mul.wide.u32 %rd9, %r5, 4;
+add.s64 %rd2, %rd1, %rd9;
+add.s32 %r27, %r5, 1;
+mul.wide.u32 %rd10, %r27, 4;
+add.s64 %rd3, %rd1, %rd10;
+add.s32 %r28, %r5, 2;
+mul.wide.u32 %rd11, %r28, 4;
+add.s64 %rd4, %rd1, %rd11;
+setp.gt.s32 %p4, %r17, 3;
+@%p4 bra $L__BB0_6;
+
+setp.eq.s32 %p8, %r17, 1;
+@%p8 bra $L__BB0_13;
+
+setp.eq.s32 %p9, %r17, 2;
+@%p9 bra $L__BB0_12;
+
+setp.eq.s32 %p10, %r17, 3;
+@%p10 bra $L__BB0_5;
+bra.uni $L__BB0_14;
+
+$L__BB0_5:
+st.global.f32 [%rd2], %f7;
+st.global.f32 [%rd3], %f7;
+st.global.f32 [%rd4], %f7;
+bra.uni $L__BB0_16;
+
+$L__BB0_6:
+setp.eq.s32 %p5, %r17, 4;
+@%p5 bra $L__BB0_11;
+
+setp.eq.s32 %p6, %r17, 7;
+@%p6 bra $L__BB0_10;
+
+setp.ne.s32 %p7, %r17, 6;
+@%p7 bra $L__BB0_14;
+
+st.global.f32 [%rd2], %f5;
+st.global.f32 [%rd3], %f6;
+bra.uni $L__BB0_16;
+
+$L__BB0_13:
+st.global.f32 [%rd2], %f5;
+st.global.f32 [%rd3], %f6;
+mov.u32 %r30, 0;
+st.global.u32 [%rd4], %r30;
+bra.uni $L__BB0_16;
+
+$L__BB0_11:
+st.global.f32 [%rd2], %f8;
+st.global.f32 [%rd3], %f8;
+st.global.f32 [%rd4], %f8;
+bra.uni $L__BB0_16;
+
+$L__BB0_14:
+setp.eq.s32 %p11, %r17, 5;
+st.global.f32 [%rd2], %f5;
+@%p11 bra $L__BB0_16;
+
+st.global.f32 [%rd3], %f6;
+st.global.f32 [%rd4], %f7;
+bra.uni $L__BB0_16;
+
+$L__BB0_12:
+st.global.f32 [%rd2], %f5;
+st.global.f32 [%rd3], %f5;
+st.global.f32 [%rd4], %f5;
+bra.uni $L__BB0_16;
+
+$L__BB0_10:
+st.global.f32 [%rd2], %f5;
+st.global.f32 [%rd3], %f6;
+st.global.f32 [%rd4], %f7;
+add.s32 %r29, %r5, 3;
+mul.wide.u32 %rd12, %r29, 4;
+add.s64 %rd13, %rd1, %rd12;
+st.global.f32 [%rd13], %f8;
+bra.uni $L__BB0_16;
+
+}

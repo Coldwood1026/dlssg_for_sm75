@@ -1,0 +1,52 @@
+
+//
+//
+//
+//
+//
+//
+
+.version 8.7
+.target sm_75
+.address_size 64
+
+//
+
+.visible .entry cuda_clear_view_kernel(
+.param .align 8 .b8 cuda_clear_view_kernel_param_0[40]
+)
+.maxntid 64, 1, 1
+{
+.reg .pred %p<8>;
+.reg .b32 %r<21>;
+.reg .f32 %f<9>;
+.reg .b64 %rd<4>;
+
+ld.param.v2.u32 {%r7, %r8}, [cuda_clear_view_kernel_param_0+8];
+ld.param.v2.u32 {%r9, %r10}, [cuda_clear_view_kernel_param_0];
+ld.param.v2.f32 {%f3, %f4}, [cuda_clear_view_kernel_param_0+32];
+ld.param.v2.f32 {%f1, %f2}, [cuda_clear_view_kernel_param_0+24];
+ld.param.u64 %rd2, [cuda_clear_view_kernel_param_0+16];
+mov.u32 %r11, %ctaid.x;
+shl.b32 %r12, %r11, 3;
+mov.u32 %r13, %tid.x;
+add.s32 %r14, %r12, %r13;
+mov.u32 %r15, %ctaid.y;
+shl.b32 %r16, %r15, 3;
+mov.u32 %r17, %tid.y;
+add.s32 %r18, %r16, %r17;
+setp.lt.u32 %p1, %r14, %r9;
+setp.ge.u32 %p2, %r14, %r7;
+setp.lt.u32 %p3, %r18, %r10;
+or.pred %p4, %p1, %p3;
+or.pred %p5, %p4, %p2;
+setp.ge.u32 %p6, %r18, %r8;
+or.pred %p7, %p5, %p6;
+@%p7 bra $L__BB0_2;
+//
+sust.p.2d.v4.b32.zero [%rd2, {%r14,%r18}], {%f1,%f2,%f3,%f4};
+//
+$L__BB0_2:
+ret;
+
+}

@@ -1,0 +1,156 @@
+
+//
+//
+//
+//
+//
+//
+
+.version 8.7
+.target sm_75
+.address_size 64
+
+//
+
+.visible .entry cuda_capture_output_exposure_scale_kernel(
+.param .align 8 .b8 cuda_capture_output_exposure_scale_kernel_param_0[56]
+)
+.maxntid 256, 1, 1
+{
+.reg .pred %p<12>;
+.reg .b16 %rs<2>;
+.reg .f32 %f<28>;
+.reg .b32 %r<33>;
+.reg .b64 %rd<17>;
+
+
+ld.param.v2.u32 {%r12, %r13}, [cuda_capture_output_exposure_scale_kernel_param_0+8];
+ld.param.v2.u32 {%r14, %r15}, [cuda_capture_output_exposure_scale_kernel_param_0];
+ld.param.v2.u32 {%r16, %r17}, [cuda_capture_output_exposure_scale_kernel_param_0+16];
+ld.param.u64 %rd7, [cuda_capture_output_exposure_scale_kernel_param_0+48];
+ld.param.u64 %rd10, [cuda_capture_output_exposure_scale_kernel_param_0+40];
+ld.param.u64 %rd8, [cuda_capture_output_exposure_scale_kernel_param_0+32];
+mov.u32 %r18, %ctaid.x;
+shl.b32 %r19, %r18, 4;
+mov.u32 %r20, %tid.x;
+add.s32 %r2, %r19, %r20;
+mov.u32 %r21, %ctaid.y;
+shl.b32 %r22, %r21, 4;
+mov.u32 %r23, %tid.y;
+add.s32 %r3, %r22, %r23;
+setp.ge.s32 %p1, %r2, %r12;
+setp.ge.s32 %p2, %r3, %r13;
+or.pred %p3, %p2, %p1;
+@%p3 bra $L__BB0_16;
+bra.uni $L__BB0_1;
+
+$L__BB0_16:
+ret;
+
+$L__BB0_1:
+cvta.to.global.u64 %rd1, %rd7;
+add.s32 %r24, %r14, %r2;
+add.s32 %r25, %r15, %r3;
+//
+tex.base.2d.v4.f32.s32 {%f6,%f7,%f8,%f9}, [%rd8, {%r24,%r25}];
+//
+mov.u32 %r27, 0;
+//
+tex.base.2d.v4.f32.s32 {%f10,%f11,%f12,%f13}, [%rd10, {%r27,%r27}];
+//
+mad.lo.s32 %r28, %r12, %r3, %r2;
+mul.lo.s32 %r5, %r28, %r16;
+mul.wide.u32 %rd12, %r5, 4;
+add.s64 %rd2, %rd1, %rd12;
+add.s32 %r29, %r5, 1;
+mul.wide.u32 %rd13, %r29, 4;
+add.s64 %rd3, %rd1, %rd13;
+add.s32 %r30, %r5, 2;
+mul.wide.u32 %rd14, %r30, 4;
+add.s64 %rd4, %rd1, %rd14;
+setp.gt.s32 %p4, %r17, 3;
+@%p4 bra $L__BB0_6;
+
+setp.eq.s32 %p8, %r17, 1;
+@%p8 bra $L__BB0_13;
+
+setp.eq.s32 %p9, %r17, 2;
+@%p9 bra $L__BB0_12;
+
+setp.eq.s32 %p10, %r17, 3;
+@%p10 bra $L__BB0_5;
+bra.uni $L__BB0_14;
+
+$L__BB0_5:
+mul.ftz.f32 %f21, %f8, %f10;
+st.global.f32 [%rd2], %f21;
+st.global.f32 [%rd3], %f21;
+st.global.f32 [%rd4], %f21;
+bra.uni $L__BB0_16;
+
+$L__BB0_6:
+setp.eq.s32 %p5, %r17, 4;
+@%p5 bra $L__BB0_11;
+
+setp.eq.s32 %p6, %r17, 7;
+@%p6 bra $L__BB0_10;
+
+setp.ne.s32 %p7, %r17, 6;
+@%p7 bra $L__BB0_14;
+
+mul.ftz.f32 %f14, %f6, %f10;
+st.global.f32 [%rd2], %f14;
+mul.ftz.f32 %f15, %f7, %f10;
+st.global.f32 [%rd3], %f15;
+bra.uni $L__BB0_16;
+
+$L__BB0_13:
+mul.ftz.f32 %f23, %f6, %f10;
+st.global.f32 [%rd2], %f23;
+mul.ftz.f32 %f24, %f7, %f10;
+st.global.f32 [%rd3], %f24;
+mov.u32 %r32, 0;
+st.global.u32 [%rd4], %r32;
+bra.uni $L__BB0_16;
+
+$L__BB0_11:
+mul.ftz.f32 %f20, %f9, %f10;
+st.global.f32 [%rd2], %f20;
+st.global.f32 [%rd3], %f20;
+st.global.f32 [%rd4], %f20;
+bra.uni $L__BB0_16;
+
+$L__BB0_14:
+setp.eq.s32 %p11, %r17, 5;
+mul.ftz.f32 %f25, %f6, %f10;
+st.global.f32 [%rd2], %f25;
+@%p11 bra $L__BB0_16;
+
+mul.ftz.f32 %f26, %f7, %f10;
+st.global.f32 [%rd3], %f26;
+mul.ftz.f32 %f27, %f8, %f10;
+st.global.f32 [%rd4], %f27;
+bra.uni $L__BB0_16;
+
+$L__BB0_12:
+mul.ftz.f32 %f22, %f6, %f10;
+st.global.f32 [%rd2], %f22;
+st.global.f32 [%rd3], %f22;
+st.global.f32 [%rd4], %f22;
+bra.uni $L__BB0_16;
+
+$L__BB0_10:
+mul.ftz.f32 %f16, %f6, %f10;
+st.global.f32 [%rd2], %f16;
+mul.ftz.f32 %f17, %f7, %f10;
+st.global.f32 [%rd3], %f17;
+mul.ftz.f32 %f18, %f8, %f10;
+st.global.f32 [%rd4], %f18;
+add.s32 %r31, %r5, 3;
+mul.wide.u32 %rd15, %r31, 4;
+add.s64 %rd16, %rd1, %rd15;
+mul.ftz.f32 %f19, %f9, %f10;
+st.global.f32 [%rd16], %f19;
+bra.uni $L__BB0_16;
+
+}
