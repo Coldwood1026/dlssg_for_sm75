@@ -1,5 +1,5 @@
 <h1 style="font-size: 4rem; font-weight: 900; line-height: 1.2; color: #c62828;">
-⚠️ The sm75 backend of this project has been merged into sdli1995's upstream repository. This repository will be updated after future breaking updates.
+⚠️ The sm75 backend of this project has been merged into sdli1995's upstream repository. This repository will only be updated after future breaking updates.
 </h1>
 
 ---
