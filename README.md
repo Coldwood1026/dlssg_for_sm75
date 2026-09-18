@@ -1,10 +1,16 @@
+<h1 style="font-size: 4rem; font-weight: 900; line-height: 1.2; color: #c62828;">
+⚠️ The sm75 backend of this project has been merged into sdli1995's upstream repository. This repository will be updated after future breaking updates.
+</h1>
+
+---
+
 # dlssg_sm75 v1.0 — Real DLSS Frame Generation on 20-series (Turing / sm_75)
 
 **2026-09-09**, verified on real hardware: RTX 2060 Max-Q + The Witcher 3 next-gen (DX12). The in-game
 **frame-generation toggle can be turned on**, the backend installs successfully
 (`backend_install status:0`), and the log shows no `bridge_error`.
 
-> 中文版见 `部署说明.md`。
+> Chinese version: `部署说明.md`.
 > Byte-level change list vs. the originals: `改动说明.md` (Chinese).
 
 ---
